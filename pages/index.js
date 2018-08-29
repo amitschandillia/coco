@@ -25,7 +25,7 @@ class Index extends Component {
     return (
       <div>
         <Head>
-          <title>Amit is here!!</title>
+          <title>Amit is here!!!</title>
         </Head>
         <Navbar />
         <h1>Hi!</h1>
