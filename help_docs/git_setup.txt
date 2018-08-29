@@ -1,0 +1,57 @@
+ON GITHUB.COM:
+
+1. Sign up with github.com and create repo.
+
+On AWS (UBUNTU 16):
+
+2. $ sudo apt-get install git
+
+3. $ git --version
+
+4. $ git config --global user.name "<GITHUB USERNAME>"
+
+5. $ git config --global user.email "<EMAIL ADDRESS ON GITHUB>"
+
+6. $ mkdir <PROJECT FOLDER>
+
+7. $ cd <PROJECT FOLDER>
+
+8. $ git init
+
+9. $ Create .gitignore file and populate it with a list of files/folders to suppress
+
+10. $ git add .
+
+11. $ git commit -m "<COMMIT MESSAGE>"
+
+12. $ git remote add origin <COMPLETE REPO URL ENDING IN .GIT>
+
+13. $  git push -u origin master
+
+14. $ cd ..
+
+15. $ ssh-keygen -t rsa -b 4096 -C "<EMAIL ADDRESS ON GITHUB>"
+
+16. $  eval "$(ssh-agent -s)"
+
+17. $ ssh-add ~/.ssh/id_rsa
+
+18. $  cat ~/.ssh/id_rsa.pub
+
+19. Select and copy the generated public key.
+
+ON GITHUB.COM:
+
+20. Navigate to profile > settings > SSH and GPG keys > New SSH key (button).
+
+21. Enter a title in the Title field and paste the public key into the Key field.
+
+22. Click Add SSH key (button).
+
+ON AWS (UBUNTU 16):
+
+23. cd <PROJECT FOLDER>
+
+24. $ git remote -v
+
+25. $ git remote set-url origin git@github.com:<GITHUB USERNAME>/<REPO NAME>.git
