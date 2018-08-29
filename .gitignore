@@ -11,3 +11,4 @@ coverage/
 .next/
 .build/
 .env
+help_docs/
