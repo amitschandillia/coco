@@ -1,4 +1,4 @@
-/* fallback */
+/* import icon-set with fallback */
 @font-face {
   font-family: 'Material Icons';
   font-style: normal;
@@ -24,3 +24,10 @@
 
 // Bring in MaterialCSS
 @import "sass/materialize";
+
+
+// Custom styles
+.someclass {
+  color: green;
+  font-family: 'Roboto', sans-serif;
+}

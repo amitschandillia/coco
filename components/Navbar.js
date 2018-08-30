@@ -16,6 +16,9 @@ class Navbar extends Component {
           <Link href='/about'>
             <a>About</a>
           </Link>
+          <Link href='/demopage'>
+            <a>Demo</a>
+          </Link>
           <mark className={'badge'}>Hello!</mark>
         </div>
       </nav>

@@ -44,6 +44,9 @@ module.exports = {
       {
         test: /\.(svg|ttf|eot)$/i,
         loader: 'file-loader?outputPath=static/',
+        options: {
+          name: '[path][name].[ext]',
+        }
       },
       {
         test: /\.(png|jpe?g|gif)$/i,
