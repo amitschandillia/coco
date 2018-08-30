@@ -13,7 +13,8 @@ class DemoPage extends Component {
     $(el).slideToggle();
   }
 
-  componentDidMount() {
+  componentDidMount = () => {
+    if ("serviceWorker" in navigator) { navigator.serviceWorker.register("/sw.js"); }
     const el = findDOMNode(this.refs.test);
     $(el).text('new amit');
   }

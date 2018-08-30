@@ -6,6 +6,10 @@ import stylesheet from '../styles/main.scss';
 
 class Index extends Component {
 
+  componentDidMount = () => {
+    if ("serviceWorker" in navigator) { navigator.serviceWorker.register("/sw.js"); }
+  }
+
   render() {
     return (
       <div>

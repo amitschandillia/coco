@@ -1,6 +1,7 @@
 const express = require('express')
 require('dotenv').config()
 const path = require('path')
+const { createReadStream } = require('fs')
 const next = require('next')
 const compression = require('compression')
 const cookieParser = require('cookie-parser');
@@ -34,6 +35,11 @@ app.prepare()
 
     server.get('/posts/:id', (req, res) => {
       return app.render(req, res, '/posts', { id: req.params.id })
+    })
+
+    server.get('/sw.js', (req, res) => {
+      res.set({'Content-Type': 'text/javascript'});
+      createReadStream('./offline/serviceWorker.js').pipe(res);
     })
 
     // Custom build resources aliases
