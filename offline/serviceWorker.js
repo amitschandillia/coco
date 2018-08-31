@@ -1,4 +1,4 @@
-const CACHE_NAME = "version-1";
+const CACHE_NAME = "version-0.2";
 const urlsToCache = ["/"];
 
 // Call install event
