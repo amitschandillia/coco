@@ -1,12 +1,12 @@
-const CACHE_NAME = "version-0.0.4";
-const urlsToCache = ["/"];
+const CACHE_NAME = "version-0.0.11";
+const URLSTOCACHE = ["/"];
 
 // Call install event
 self.addEventListener("install", e => {
   e.waitUntil(
     caches
     .open(CACHE_NAME)
-    .then(cache => cache.addAll(urlsToCache))
+    .then(cache => cache.addAll(URLSTOCACHE))
     .then(() => self.skipWaiting())
   );
 });

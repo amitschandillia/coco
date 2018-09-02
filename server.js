@@ -20,7 +20,7 @@ app.prepare()
     const server = express()
 
     server.use(compression())
-    server.use(favicon(path.join(__dirname, 'static', 'img', 'favicon.ico')))
+    server.use(favicon(path.join(__dirname, 'static', 'images', 'favicon.ico')))
     server.use(bodyParser.json());
     server.use(bodyParser.urlencoded({ extended: false }));
     server.use(cookieParser());
@@ -45,8 +45,8 @@ app.prepare()
     // Custom build resources aliases
     // ---------------------------------------------------------------
     server.use('/_s', express.static(path.join(__dirname, '.build/static')));
-    server.use('/_f', express.static(path.join(__dirname, './static/img')));
-    server.use('/favicon.ico', express.static(path.join(__dirname, './static/img/favicon.ico')));
+    server.use('/_f', express.static(path.join(__dirname, './static')));
+    server.use('/favicon.ico', express.static(path.join(__dirname, './static/images/favicon.ico')));
     server.use('/_next/webpack/static', express.static(path.join(__dirname, '.build/static')));
     // ---------------------------------------------------------------
 
