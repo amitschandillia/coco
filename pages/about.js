@@ -15,8 +15,8 @@ class About extends Component {
       <div>
         <Head>
           <title>Learn more about us...</title>
+          <meta name="description" content="This is the SEO description" key="description" />
         </Head>
-        <Navbar />
         <h1>Hi!</h1>
         <button className='waves-effect waves-light btn btn-large blue'>Hide Amit</button>
         <div>This text cannot be removed</div>

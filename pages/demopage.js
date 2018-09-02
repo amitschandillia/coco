@@ -24,8 +24,8 @@ class DemoPage extends Component {
       <div>
         <Head>
           <title>Amit is here!!!</title>
+          <meta name="description" content="This is the SEO description" key="description" />
         </Head>
-        <Navbar />
         <h1>Hi!</h1>
         <button onClick={this.handleToggle} className='waves-effect waves-light btn btn-large blue'>Hide Amit</button>
         <div ref='test'>Amit is great!</div>

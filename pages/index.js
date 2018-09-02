@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Head from 'next/head';
 import Navbar from '../components/Navbar.js';
+import Image from '../components/Image';
 
 import stylesheet from '../styles/main.scss';
 
@@ -15,8 +16,8 @@ class Index extends Component {
       <div>
         <Head>
           <title>Amit is here!!!</title>
+          <meta name="description" content="This is the SEO description" key="description" />
         </Head>
-        <Navbar />
         <h1>Hi!</h1>
         <button className='waves-effect waves-light btn btn-large blue'>Hide Amit</button>
         <div>Amit is great!</div>

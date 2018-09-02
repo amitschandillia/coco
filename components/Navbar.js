@@ -8,18 +8,27 @@ class Navbar extends Component {
   }
   render() {
     return (
+
       <nav>
-        <div>
-          <Link href='/'>
-            <a>Home</a>
-          </Link>
-          <Link href='/about'>
-            <a>About</a>
-          </Link>
-          <Link href='/demopage'>
-            <a>Demo</a>
-          </Link>
-          <mark className={'badge'}>Hello!</mark>
+        <div className="nav-wrapper">
+          <a href="#" className="brand-logo">Logo</a>
+          <ul id="nav-mobile" className="right hide-on-med-and-down">
+            <li>
+              <Link prefetch href='/'>
+                <a>Home</a>
+              </Link>
+            </li>
+            <li>
+              <Link prefetch href='/about'>
+                <a>About</a>
+              </Link>
+            </li>
+            <li>
+              <Link prefetch href='/demopage'>
+                <a>Demo</a>
+              </Link>
+            </li>
+          </ul>
         </div>
       </nav>
     );
