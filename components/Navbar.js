@@ -22,7 +22,7 @@ class Navbar extends Component {
         <nav>
           <div className="nav-wrapper blue">
             <Link prefetch href='/'>
-              <a href="/" className="brand-logo">Logo</a>
+              <a href="/" className="brand-logo">Project Coco</a>
             </Link>
             <a href="#" data-target="slide-out" className="sidenav-trigger"><i className="material-icons">menu</i></a>
             <ul id="nav-mobile" className="right hide-on-med-and-down">
@@ -41,9 +41,18 @@ class Navbar extends Component {
             </ul>
           </div>
         </nav>
+        {/* Sidenav markup */}
         <ul className="sidenav" id="slide-out">
-          <li><a href="sass.html">Sass</a></li>
-          <li><a href="badges.html">Components</a></li>
+          <li>
+            <Link prefetch href='/'>
+              <a>Home</a>
+            </Link>
+          </li>
+          <li>
+            <Link prefetch href='/about'>
+              <a>About</a>
+            </Link>
+          </li>
         </ul>
       </Fragment>
     );
