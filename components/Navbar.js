@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import Link from 'next/link';
 import $ from 'jquery';
 
@@ -9,18 +9,21 @@ class Navbar extends Component {
   }
 
   componentDidMount = () => {
-      $(document).ready(function(){
-      $('.sidenav').sidenav();
+    document.addEventListener('DOMContentLoaded', function() {
+      var elems = document.querySelectorAll('.sidenav');
+      var instances = M.Sidenav.init(elems, options);
     });
   }
 
   render() {
     return (
 
-      <section>
+      <Fragment>
         <nav>
-          <div className="nav-wrapper">
-            <a href="/" className="brand-logo">Logo</a>
+          <div className="nav-wrapper blue">
+            <Link prefetch href='/'>
+              <a href="/" className="brand-logo">Logo</a>
+            </Link>
             <a href="#" data-target="slide-out" className="sidenav-trigger"><i className="material-icons">menu</i></a>
             <ul id="nav-mobile" className="right hide-on-med-and-down">
               <li>
@@ -34,9 +37,6 @@ class Navbar extends Component {
                 </Link>
               </li>
               <li>
-                <Link prefetch href='/demopage'>
-                  <a>Demo</a>
-                </Link>
               </li>
             </ul>
           </div>
@@ -45,7 +45,7 @@ class Navbar extends Component {
           <li><a href="sass.html">Sass</a></li>
           <li><a href="badges.html">Components</a></li>
         </ul>
-      </section>
+      </Fragment>
     );
   }
 }

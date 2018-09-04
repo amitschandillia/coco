@@ -1,9 +1,8 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import Head from 'next/head';
-import Navbar from '../components/Navbar.js';
 import Image from '../components/Image';
 
-import stylesheet from '../styles/main.scss';
+import stylesheet from '../static/styles/main.scss';
 
 class Index extends Component {
 
@@ -13,7 +12,7 @@ class Index extends Component {
 
   render() {
     return (
-      <div>
+      <Fragment>
         <Head>
           <title>Amit is here!!!</title>
           <meta name="description" content="This is the SEO description" key="description" />
@@ -21,7 +20,7 @@ class Index extends Component {
         <h1>Hi!</h1>
         <button className='waves-effect waves-light btn btn-large blue'>Hide Amit</button>
         <div>Amit is great!</div>
-        <button className='btn btn-large green'><i className="material-icons left">add</i>Next one here</button>
+        <button className='btn btn-large green'><i className="material-icons left">cloud</i>Next one here</button>
         <div className="row">
           <form className="col s12">
             <div className="row">
@@ -38,7 +37,7 @@ class Index extends Component {
             </div>
           </form>
         </div>
-      </div>
+      </Fragment>
     )
   }
 }
