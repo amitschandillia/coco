@@ -20,15 +20,21 @@ class Navbar extends Component {
       <Fragment>
         <nav>
           <div className="nav-wrapper blue">
+            {/*Brand name/logo*/}
             <Link prefetch href='/'>
               <a href="/" className="brand-logo">Project Coco</a>
             </Link>
-            <a href="#" data-target="slide-out" className="sidenav-trigger"><i className="material-icons">menu</i></a>
+            {/*Hamburger*/}
+            <span data-target="slide-out" className="sidenav-trigger">
+              <i className="material-icons">menu</i>
+            </span>
+            {/*Regular navbar for desktop screens*/}
             <ul id="nav-mobile" className="right hide-on-med-and-down">
               <NavItems />
             </ul>
           </div>
         </nav>
+        {/*Sidenav for smaller screens*/}
         <SideNav mounted={this.initializeSideNav} />
       </Fragment>
     );
