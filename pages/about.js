@@ -17,18 +17,20 @@ class About extends Component {
   }
 
   render() {
+    var title = 'About | New Project Coco PWA Prototype';
+    var description = 'This is the description for the about page';
     return (
       <Fragment>
         <Head>
-          <title>About | Project Coco PWA Prototype</title>
-          <meta name="description" content="This is the SEO description" key="description" />
+          <title>{ title }</title>
+          <meta name="description" content={ description } key="description" />
         </Head>
         <h1>About page</h1>
         <button onClick={this.handleToggle} className='waves-effect waves-light btn btn-large teal'>
           <i className="material-icons left">delete</i>
           Hide the following text
         </button>
-        <div ref='test'>Click the button above to hide this text. This is a test for JQuery</div>
+        <h3 ref='test'>Click the button above to hide this text. This is a test for JQuery</h3>
       </Fragment>
     )
   }

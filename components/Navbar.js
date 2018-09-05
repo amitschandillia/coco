@@ -8,12 +8,12 @@ class Navbar extends Component {
     this.props = props;
   }
 
-  componentDidMount = () => {
-    document.addEventListener('DOMContentLoaded', function() {
-      var elems = document.querySelectorAll('.sidenav');
-      var instances = M.Sidenav.init(elems, options);
-    });
-  }
+  // componentDidMount = () => {
+  //   document.addEventListener('DOMContentLoaded', function() {
+  //     var elems = document.querySelectorAll('.sidenav');
+  //     var instances = M.Sidenav.init(elems, options);
+  //   });
+  // }
 
   render() {
     return (

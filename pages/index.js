@@ -11,11 +11,13 @@ class Index extends Component {
   }
 
   render() {
+    var title = 'Home | New Project Coco PWA Prototype';
+    var description = 'This is the description for the homepage';
     return (
       <Fragment>
         <Head>
-          <title>Home | Project Coco PWA Prototype</title>
-          <meta name="description" content="This is the SEO description" key="description" />
+          <title>{ title }</title>
+          <meta name="description" content={ description } key="description" />
         </Head>
         <h1>Home page</h1>
         <button className='waves-effect waves-light btn btn-large blue'>
