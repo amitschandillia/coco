@@ -25,9 +25,9 @@ class Navbar extends Component {
               <a href="/" className="brand-logo">Project Coco</a>
             </Link>
             {/*Hamburger*/}
-            <span data-target="slide-out" className="sidenav-trigger">
+            <a href="#" data-target="slide-out" className="sidenav-trigger">
               <i className="material-icons">menu</i>
-            </span>
+            </a>
             {/*Regular navbar for desktop screens*/}
             <ul id="nav-mobile" className="right hide-on-med-and-down">
               <NavItems />
