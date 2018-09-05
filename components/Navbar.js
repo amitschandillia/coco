@@ -2,6 +2,7 @@ import React, { Component, Fragment } from 'react';
 import Link from 'next/link';
 import $ from 'jquery';
 import SideNav from './SideNav';
+import NavItems from './NavItems';
 
 class Navbar extends Component {
   constructor(props) {
@@ -24,16 +25,7 @@ class Navbar extends Component {
             </Link>
             <a href="#" data-target="slide-out" className="sidenav-trigger"><i className="material-icons">menu</i></a>
             <ul id="nav-mobile" className="right hide-on-med-and-down">
-              <li>
-                <Link prefetch href='/'>
-                  <a>Home</a>
-                </Link>
-              </li>
-              <li>
-                <Link prefetch href='/about'>
-                  <a>About</a>
-                </Link>
-              </li>
+              <NavItems />
             </ul>
           </div>
         </nav>
