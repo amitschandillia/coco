@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import Link from 'next/link';
 import $ from 'jquery';
+import SideNav from './SideNav';
 
 class Navbar extends Component {
   constructor(props) {
@@ -8,16 +9,13 @@ class Navbar extends Component {
     this.props = props;
   }
 
-  // componentDidMount = () => {
-  //   document.addEventListener('DOMContentLoaded', function() {
-  //     var elems = document.querySelectorAll('.sidenav');
-  //     var instances = M.Sidenav.init(elems, options);
-  //   });
-  // }
+  initializeSideNav = (sideNav) => {
+    let elems = sideNav;
+    let instances = M.Sidenav.init(elems);
+  }
 
   render() {
     return (
-
       <Fragment>
         <nav>
           <div className="nav-wrapper blue">
@@ -36,24 +34,10 @@ class Navbar extends Component {
                   <a>About</a>
                 </Link>
               </li>
-              <li>
-              </li>
             </ul>
           </div>
         </nav>
-        {/* Sidenav markup */}
-        <ul className="sidenav" id="slide-out">
-          <li>
-            <Link prefetch href='/'>
-              <a>Home</a>
-            </Link>
-          </li>
-          <li>
-            <Link prefetch href='/about'>
-              <a>About</a>
-            </Link>
-          </li>
-        </ul>
+        <SideNav mounted={this.initializeSideNav} />
       </Fragment>
     );
   }
