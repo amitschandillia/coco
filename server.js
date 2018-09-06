@@ -31,7 +31,7 @@ app.prepare()
     //api-specific routes
     server.use(subdomain('api', api_router));
     api_router.get('/', function(req, res) {
-      res.send('Welcome to our API!');
+      res.render('./api/index.html');
     });
     //admin-specific routes
     server.use(subdomain('admin', admin_router));
