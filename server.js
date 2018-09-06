@@ -12,6 +12,12 @@ const RedisStore = require('connect-redis')(expressSession);
 const passport = require('passport');
 const favicon = require('serve-favicon');
 
+const helmet = require('helmet');
+const cors = require('cors');
+const APIRoutes = require('./routes/api');
+const AdminRoutes = require('./routes/admin');
+// const config = require('./config/main');
+
 const dev = process.env.NODE_ENV !== 'production'
 const app = next({ dev })
 const handle = app.getRequestHandler()
@@ -27,17 +33,13 @@ app.prepare()
     server.use(bodyParser.json());
     server.use(bodyParser.urlencoded({ extended: false }));
     server.use(cookieParser());
+    server.use(helmet());
+    server.use(cors());
 
-    //api-specific routes
-    server.use(subdomain('api', api_router));
-    api_router.get('/', function(req, res) {
-      res.render('./api/index.html');
-    });
-    //admin-specific routes
-    server.use(subdomain('admin', admin_router));
-    admin_router.get('/', function(req, res) {
-      res.send('Admins area');
-    });
+    // Subdomain routing
+    server.use(subdomain('api', APIRoutes));
+    server.use(subdomain('admin', AdminRoutes));
+
 
     server.get('/a', (req, res) => {
       return app.render(req, res, '/b', req.query)
