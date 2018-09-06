@@ -19,7 +19,8 @@ const handle = app.getRequestHandler()
 app.prepare()
   .then(() => {
     const server = express()
-    const router = express.Router();
+    const api_router = express.Router();
+    const admin_router = express.Router();
 
     server.use(compression())
     server.use(favicon(path.join(__dirname, 'static', 'images', 'icons', 'favicon.ico')))
@@ -27,10 +28,14 @@ app.prepare()
     server.use(bodyParser.urlencoded({ extended: false }));
     server.use(cookieParser());
 
-    server.use(subdomain('api', router));
     //api specific routes
-    router.get('/', function(req, res) {
+    server.use(subdomain('api', api_router));
+    api_router.get('/', function(req, res) {
       res.send('Welcome to our API!');
+    });
+    server.use(subdomain('admin', admin_router));
+    admin_router.get('/', function(req, res) {
+      res.send('Admins area');
     });
 
     server.get('/a', (req, res) => {
