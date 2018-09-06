@@ -1,12 +1,8 @@
 import React, { Component, Fragment } from 'react';
 import Link from 'next/link';
-import NavItems from './NavItems';
-
-// Materialize and dependent JQuery imports
 import $ from 'jquery';
-if (typeof window !== 'undefined') {
-  require('materialize-css');
-}
+import SideNav from './SideNav';
+import NavItems from './NavItems';
 
 class Navbar extends Component {
   constructor(props) {
@@ -14,8 +10,8 @@ class Navbar extends Component {
     this.props = props;
   }
 
-  componentDidMount = () => {
-    var elems = document.querySelectorAll('.sidenav');
+  initializeSideNav = (sideNav) => {
+    let elems = sideNav;
     let instances = M.Sidenav.init(elems);
   }
 
@@ -38,20 +34,8 @@ class Navbar extends Component {
             </ul>
           </div>
         </nav>
-        {/* Sidenav markup */}
-        <ul className="sidenav" id="slide-out">
-          <li>
-            <div className="user-view">
-              <div className="background">
-                <img src="/_f/images/sidenavHeader.jpg" />
-              </div>
-              <a href="#user"><img className="circle" src="/_f/images/profile.jpg" /></a>
-              <a href="#name"><span className="white-text name">John Doe</span></a>
-              <a href="#email"><span className="white-text email">jdandturk@gmail.com</span></a>
-            </div>
-          </li>
-          <NavItems />
-        </ul>
+        {/*Sidenav for smaller screens*/}
+        <SideNav mounted={this.initializeSideNav} />
       </Fragment>
     );
   }

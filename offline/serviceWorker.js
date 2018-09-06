@@ -1,4 +1,4 @@
-const CACHE_NAME = "version-0.0.19";
+const CACHE_NAME = "version-0.0.22";
 const URLSTOCACHE = ["/"];
 
 // Call install event

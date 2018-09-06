@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import Head from 'next/head';
-import $ from 'jquery';
+// import $ from 'jquery';
 import { findDOMNode } from 'react-dom';
 
 import stylesheet from '../static/styles/main.scss';
@@ -9,7 +9,7 @@ class About extends Component {
 
   handleToggle = () => {
     const el = findDOMNode(this.refs.test);
-    $(el).slideToggle();
+    // $(el).slideToggle();
   }
 
   componentDidMount = () => {

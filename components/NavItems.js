@@ -8,12 +8,12 @@ class NavItems extends Component {
       <Fragment>
         <li>
           <Link prefetch href='/'>
-            <a className="sidenav-close">Home</a>
+            <a className="sidenav-close waves-effect">Home</a>
           </Link>
         </li>
         <li>
           <Link prefetch href='/about'>
-            <a className="sidenav-close">About</a>
+            <a className="sidenav-close waves-effect">About</a>
           </Link>
         </li>
       </Fragment>
