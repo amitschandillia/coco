@@ -1,3 +1,4 @@
+const subdomain = require('express-subdomain');
 const express = require('express')
 require('dotenv').config()
 const path = require('path')
@@ -18,12 +19,19 @@ const handle = app.getRequestHandler()
 app.prepare()
   .then(() => {
     const server = express()
+    const router = express.Router();
 
     server.use(compression())
     server.use(favicon(path.join(__dirname, 'static', 'images', 'icons', 'favicon.ico')))
     server.use(bodyParser.json());
     server.use(bodyParser.urlencoded({ extended: false }));
     server.use(cookieParser());
+
+    server.use(subdomain('api', router));
+    //api specific routes
+    router.get('/', function(req, res) {
+      res.send('Welcome to our API!');
+    });
 
     server.get('/a', (req, res) => {
       return app.render(req, res, '/b', req.query)

@@ -20,7 +20,7 @@ On AWS (UBUNTU 16):
 
 9. Run Cerbot => $ certbot-auto
 
-10. Kill any running server on port 80 => $ sudo systemctl start nginx # To start nginx
+10. Kill any running server on port 80 => $ sudo systemctl stop nginx
 
 11. Generate certificates => ./certbot-auto certonly --standalone -d <DOMAIN.COM> -d <WWW.DOMAIN.COM>
 
@@ -43,3 +43,20 @@ On AWS (UBUNTU 16):
 20. Press Esc and :wq to save and quit
 
 21. Reload NJINX => $ sudo /etc/init.d/nginx reload
+
+
+TEST IF AUTO-RENEWAL OF SSL WORKING
+
+1. Stop NGINX => sudo systemctl stop nginx
+
+2. Run test script => sudo ./certbot-auto renew --dry-run
+
+3. Start NGINX => sudo systemctl start nginx
+
+MANUALLY RENEW SSL
+
+1. Stop NGINX => sudo systemctl stop nginx
+
+2. Run renewal script => ./certbot-auto certonly --standalone -d <DOMAIN.COM> -d <WWW.DOMAIN.COM>
+
+3. Start NGINX => sudo systemctl start nginx
