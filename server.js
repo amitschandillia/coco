@@ -28,11 +28,12 @@ app.prepare()
     server.use(bodyParser.urlencoded({ extended: false }));
     server.use(cookieParser());
 
-    //api specific routes
+    //api-specific routes
     server.use(subdomain('api', api_router));
     api_router.get('/', function(req, res) {
       res.send('Welcome to our API!');
     });
+    //admin-specific routes
     server.use(subdomain('admin', admin_router));
     admin_router.get('/', function(req, res) {
       res.send('Admins area');

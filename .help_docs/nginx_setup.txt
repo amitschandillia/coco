@@ -3,6 +3,7 @@ ON DOMAIN PROVIDER'S DNS PANEL:
 1. Add new record: Name (@), Type (A), TTL (1h), Data (<PUBLIC IP ADDRESS>)
 
 2. Add new record: Name (www), Type (A), TTL (1h), Data (<PUBLIC IP ADDRESS>)
+   (Keep adding new records for each subdomain, i.e. api, admin, etc.) 
 
 On AWS (UBUNTU 16):
 
@@ -22,7 +23,7 @@ On AWS (UBUNTU 16):
 
 10. Kill any running server on port 80 => $ sudo systemctl stop nginx
 
-11. Generate certificates => ./certbot-auto certonly --standalone -d <DOMAIN.COM> -d <WWW.DOMAIN.COM>
+11. Generate certificates => ./certbot-auto certonly --standalone -d <DOMAIN.COM> -d <WWW.DOMAIN.COM> -d <API.DOMAIN.COM> -d <ADMIN.DOMAIN.COM>
 
 12. Update Ubuntu => $ sudo apt-get update && sudo apt-get upgrade -y
 
