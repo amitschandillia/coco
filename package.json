@@ -8,7 +8,7 @@
     "build": "next build",
     "export": "next export",
     "start": "next start",
-    "deploy": "node hashify.js && next build && node server.js"
+    "deploy": "node prepare.js && next build && node server.js"
   },
   "repository": "https://github.com/amitsch666/nano.git",
   "author": "Amit Schandillia",

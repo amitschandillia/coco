@@ -41,17 +41,18 @@ app.prepare()
     server.use(subdomain('admin', AdminRoutes));
 
 
-    server.get('/a', (req, res) => {
-      return app.render(req, res, '/b', req.query)
-    })
-
-    server.get('/b', (req, res) => {
-      return app.render(req, res, '/a', req.query)
-    })
-
-    server.get('/posts/:id', (req, res) => {
-      return app.render(req, res, '/posts', { id: req.params.id })
-    })
+    // Routing examples
+    // ---------------------------------------------------------------------
+    // server.get('/a', (req, res) => {
+    //   return app.render(req, res, '/b', req.query)
+    // })
+    // server.get('/b', (req, res) => {
+    //   return app.render(req, res, '/a', req.query)
+    // })
+    // server.get('/posts/:id', (req, res) => {
+    //   return app.render(req, res, '/posts', { id: req.params.id })
+    // })
+    // ---------------------------------------------------------------------
 
     server.get('/sw.js', (req, res) => {
       res.set({'Content-Type': 'text/javascript'});

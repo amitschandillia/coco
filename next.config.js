@@ -64,6 +64,16 @@ module.exports = {
         'process.env.CSS': JSON.stringify(process.env.CSS),
         'process.env.NAVBAR_LOGO': JSON.stringify(process.env.NAVBAR_LOGO),
       }),
+      // new SWPrecacheWebpackPlugin({
+      //   verbose: true,
+      //   staticFileGlobsIgnorePatterns: [/\.next\//],
+      //   runtimeCaching: [
+      //     {
+      //       handler: 'networkFirst',
+      //       urlPattern: /^https?.*/
+      //     }
+      //   ]
+      // }),
     );
     return config;
   },

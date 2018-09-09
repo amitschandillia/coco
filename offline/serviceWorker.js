@@ -1,6 +1,24 @@
-const CACHE_NAME = "version-0.0.22";
-const URLSTOCACHE = ["/"];
-
+const CACHE_NAME = "v.61";
+const URLSTOCACHE = [
+	"/",
+	"/about",
+	"/index",
+	"/favicon.ico",
+	"/_f/images/icons/icon-128x128.png",
+	"/_f/images/icons/icon-144x144.png",
+	"/_f/images/icons/icon-152x152.png",
+	"/_f/images/icons/icon-192x192.png",
+	"/_f/images/icons/icon-384x384.png",
+	"/_f/images/icons/icon-512x512.png",
+	"/_f/images/icons/icon-72x72.png",
+	"/_f/images/icons/icon-96x96.png",
+	"/_f/images/icons/icon-apple.png",
+	"/_f/images/profile.jpg",
+	"/_f/images/sidenavHeader.jpg",
+	"/_f/scripts/materialize.min.js",
+	"/_f/manifest.json",
+	"/_s/5a500adc938641650ebd2192ce043262.min.css"
+];
 // Call install event
 self.addEventListener("install", e => {
   e.waitUntil(
@@ -8,9 +26,8 @@ self.addEventListener("install", e => {
     .open(CACHE_NAME)
     .then(cache => cache.addAll(URLSTOCACHE))
     .then(() => self.skipWaiting())
-  );
+  )
 });
-
 // Call activate event
 self.addEventListener("activate", e => {
   // remove unwanted caches
@@ -20,13 +37,12 @@ self.addEventListener("activate", e => {
         cacheNames.map(cache => {
           if(cache !== CACHE_NAME) {
             return caches.delete(cache);
-          }
+}
         })
       )
     })
   );
 });
-
 // Call fetch event
 self.addEventListener("fetch", e => {
   e.respondWith(
