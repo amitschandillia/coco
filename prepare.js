@@ -2,6 +2,7 @@ const fs = require('fs');
 const path = require('path');
 require('dotenv').config();
 const crypto = require('crypto');
+const editJsonFile = require("edit-json-file");
 
 // get hash seed
 const ep = String((new Date()).getTime());
@@ -136,3 +137,13 @@ fs.writeFile(
     if (err) throw err;
   }
 );
+
+
+
+// prepare manifest.json
+let file = editJsonFile(`${__dirname}/static/manifest.json`);
+file.set("name", `${process.env.NAME}`);
+file.set("short_name", `${process.env.SHORT_NAME}`);
+file.set("theme_color", `${process.env.THEME_COLOR}`);
+file.set("background_color", `${process.env.BACKGROUND_COLOR}`);
+file.save();
