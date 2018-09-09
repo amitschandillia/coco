@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import Link from 'next/link';
 import NavItems from './NavItems';
+import Image from './Image';
 
 // Materialize and dependent JQuery imports
 import $ from 'jquery';
@@ -43,9 +44,9 @@ class Navbar extends Component {
           <li>
             <div className="user-view">
               <div className="background">
-                <img src="/_f/images/sidenavHeader.jpg" />
+                <Image alt="Sidenav header" src="/_f/images/sidenavHeader.jpg" />
               </div>
-              <a href="#user"><img className="circle" src="/_f/images/profile.jpg" /></a>
+              <a href="#user"><Image className="circle" src="/_f/images/profile.jpg" alt="Profile picture" /></a>
               <a href="#name"><span className="white-text name">John Doe</span></a>
               <a href="#email"><span className="white-text email">jdandturk@gmail.com</span></a>
             </div>
