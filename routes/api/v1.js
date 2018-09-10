@@ -58,7 +58,7 @@ router.get('/blog/posts/:postId', (req, res, next) => {
     });
 });
 
-// Add a new blog post
+// Add a new post
 router.post('/blog/posts', (req, res, next) => {
   const post = new Post({
     _id: new mongoose.Types.ObjectId(),
@@ -78,9 +78,34 @@ router.post('/blog/posts', (req, res, next) => {
     });
 });
 
+// Delete a post by id
+router.delete('/blog/posts/:postId', (req, res, next) => {
+  const id = req.params.postId;
+  Post.remove({_id: id})
+    .exec()
+    .then(result => {
+      res.status(200).json(result);
+    })
+    .catch(err => {
+      res.status(500).json({error: err});
+    });
+});
 
-
-
-
+// Patch (update) a post by id
+router.patch('/blog/posts/:postId', (req, res, next) => {
+  const id = req.params.postId;
+  const updateOps = {};
+  for(const ops of req.body){
+    updateOps[ops.propName] = ops.value;
+  }
+  Post.update({_id: id}, {$set: updateOps})
+    .exec()
+    .then(result => {
+      res.status(200).json(result);
+    })
+    .catch(err => {
+      res.status(500).json({error: err});
+    });
+});
 
 module.exports = router;
