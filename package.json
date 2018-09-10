@@ -10,7 +10,7 @@
     "start": "next start",
     "deploy": "node prepare.js && next build && node server.js"
   },
-  "repository": "https://github.com/amitsch666/nano.git",
+  "repository": "https://github.com/amitsch666/coco.git",
   "author": "Amit Schandillia",
   "license": "MIT",
   "dependencies": {
