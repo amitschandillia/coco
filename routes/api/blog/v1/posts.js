@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-const Controller = require('../../../../../controllers/blog/v1/PostController');
+const Controller = require('./controllers/PostController');
 
 router.route('/')
     .get(Controller.getAllPostsHandler)

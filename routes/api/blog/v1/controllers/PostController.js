@@ -1,7 +1,7 @@
 require('dotenv').config();
 const mongoose = require('mongoose');
 
-const Post = require('../../../models/Post');
+const Post = require('../../../../../models/Post');
 const apiurl = `https://api.${process.env.BRAND_DOMAIN}/blog/v1/posts/`;
 const fields = '_id title body';
 
