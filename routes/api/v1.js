@@ -4,34 +4,19 @@ require('dotenv').config();
 const mongoose = require('mongoose');
 const Post = require('../../models/Post');
 
-var posts = [{
-  title: 'First Post',
-  body: 'Here\'s the contents of the first post.',
-  slug: '/firstpost'
-},
-{
-  title: 'Second Post',
-  body: 'Here\'s the contents of the second post.',
-  slug: '/secondpost'
-}]
-
-router.route('/')
-    .get(getRouteHandler)
-    .post(postRouteHandler);
-
-function getRouteHandler(req, res) {
-    //handle GET route here
-    res.json(posts);
-}
-
-function postRouteHandler(req, res) {
-    //handle POST route here
-}
-
 const apiurl = `https://api.${process.env.BRAND_DOMAIN}/v1/blog/posts/`;
 
-// Get all posts
-router.get('/blog/posts', (req, res, next) => {
+router.route('/blog/posts')
+    .get(getAllPostsHandler)
+    .post(addNewPostHandler);
+
+router.route('/blog/posts/:postId')
+    .get(getPostByIdHandler)
+    .delete(DeletePostHandler)
+    .patch(updatePostHandler);
+
+
+function getAllPostsHandler(req, res, next) {
   Post.find()
     .select('_id title body')
     .exec()
@@ -56,10 +41,37 @@ router.get('/blog/posts', (req, res, next) => {
     .catch(err => {
       res.status(500).json({error: err});
     });
-});
+}
 
-// Get a post by id
-router.get('/blog/posts/:postId', (req, res, next) => {
+function addNewPostHandler(req, res, next) {
+  const post = new Post({
+    _id: new mongoose.Types.ObjectId(),
+    title: req.body.title,
+    body: req.body.body
+  });
+  post
+    .save()
+    .then(result => {
+      res.status(201).json({
+        message: 'Post added successfully',
+        createdPost: {
+          _id: result._id,
+          title: result.title,
+          body: result.body,
+          request: {
+            type: 'GET',
+            description: 'Get this post',
+            url: `${apiurl}${result._id}`
+          }
+        }
+      })
+    })
+    .catch(err => {
+      res.status(500).json({error: err});
+    });
+}
+
+function getPostByIdHandler(req, res, next) {
   const id = req.params.postId;
   Post.findById(id)
     .select('_id title body')
@@ -85,39 +97,9 @@ router.get('/blog/posts/:postId', (req, res, next) => {
     .catch(err => {
       res.status(500).json({error: err});
     });
-});
+}
 
-// Add a new post
-router.post('/blog/posts', (req, res, next) => {
-  const post = new Post({
-    _id: new mongoose.Types.ObjectId(),
-    title: req.body.title,
-    body: req.body.body
-  });
-  post
-    .save()
-    .then(result => {
-      res.status(201).json({
-        message: 'Posted successfully',
-        createdPost: {
-          _id: result._id,
-          title: result.title,
-          body: result.body,
-          request: {
-            type: 'GET',
-            description: 'Get this post',
-            url: `${apiurl}${result._id}`
-          }
-        }
-      })
-    })
-    .catch(err => {
-      res.status(500).json({error: err});
-    });
-});
-
-// Delete a post by id
-router.delete('/blog/posts/:postId', (req, res, next) => {
+function DeletePostHandler(req, res, next) {
   const id = req.params.postId;
   Post.deleteOne({_id: id})
     .exec()
@@ -134,10 +116,9 @@ router.delete('/blog/posts/:postId', (req, res, next) => {
     .catch(err => {
       res.status(500).json({error: err});
     });
-});
+}
 
-// Patch (update) a post by id
-router.patch('/blog/posts/:postId', (req, res, next) => {
+function updatePostHandler(req, res, next) {
   const id = req.params.postId;
   const updateOps = {};
   for(const ops of req.body){
@@ -147,7 +128,7 @@ router.patch('/blog/posts/:postId', (req, res, next) => {
     .exec()
     .then(result => {
       res.status(200).json({
-        message: 'Post updated successfully!',
+        message: 'Post updated successfully',
         request: {
           type: 'GET',
           description: 'Get this post',
@@ -158,6 +139,6 @@ router.patch('/blog/posts/:postId', (req, res, next) => {
     .catch(err => {
       res.status(500).json({error: err});
     });
-});
+}
 
 module.exports = router;
