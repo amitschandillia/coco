@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+require('dotenv').config();
 const mongoose = require('mongoose');
 const Post = require('../../models/Post');
 
@@ -27,7 +28,7 @@ function postRouteHandler(req, res) {
     //handle POST route here
 }
 
-
+const apiurl = `https://api.${process.env.BRAND_DOMAIN}/v1/blog/posts/`;
 
 // Get all posts
 router.get('/blog/posts', (req, res, next) => {
@@ -44,7 +45,8 @@ router.get('/blog/posts', (req, res, next) => {
             body: doc.body,
             request: {
               type: 'GET',
-              url: 'https://api.schandillia.com/v1/blog/posts/' + doc._id
+              description: 'Get this post',
+              url: `${apiurl}${doc._id}`
             }
           }
         })
@@ -60,10 +62,22 @@ router.get('/blog/posts', (req, res, next) => {
 router.get('/blog/posts/:postId', (req, res, next) => {
   const id = req.params.postId;
   Post.findById(id)
+    .select('_id title body')
     .exec()
     .then(doc => {
       if(doc) {
-        res.status(200).json(doc);
+        res.status(200).json({
+          post: {
+            _id: doc._id,
+            title: doc.title,
+            body: doc.body,
+            request: {
+              type: 'GET',
+              description: 'Get all posts',
+              url: apiurl
+            }
+          }
+        });
       } else {
         res.status(404).json({message: 'Not found'});
       }
@@ -85,7 +99,16 @@ router.post('/blog/posts', (req, res, next) => {
     .then(result => {
       res.status(201).json({
         message: 'Posted successfully',
-        createdPost: post
+        createdPost: {
+          _id: result._id,
+          title: result.title,
+          body: result.body,
+          request: {
+            type: 'GET',
+            description: 'Get this post',
+            url: `${apiurl}${result._id}`
+          }
+        }
       })
     })
     .catch(err => {
@@ -96,10 +119,17 @@ router.post('/blog/posts', (req, res, next) => {
 // Delete a post by id
 router.delete('/blog/posts/:postId', (req, res, next) => {
   const id = req.params.postId;
-  Post.remove({_id: id})
+  Post.deleteOne({_id: id})
     .exec()
     .then(result => {
-      res.status(200).json(result);
+      res.status(200).json({
+        message: 'Post deleted successfully!',
+        request: {
+          type: 'GET',
+          description: 'Get all posts',
+          url: apiurl
+        }
+      });
     })
     .catch(err => {
       res.status(500).json({error: err});
@@ -116,7 +146,14 @@ router.patch('/blog/posts/:postId', (req, res, next) => {
   Post.update({_id: id}, {$set: updateOps})
     .exec()
     .then(result => {
-      res.status(200).json(result);
+      res.status(200).json({
+        message: 'Post updated successfully!',
+        request: {
+          type: 'GET',
+          description: 'Get this post',
+          url: apiurl + id
+        }
+      });
     })
     .catch(err => {
       res.status(500).json({error: err});
