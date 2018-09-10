@@ -2,16 +2,16 @@ const express = require('express');
 const router = express.Router();
 require('dotenv').config();
 const mongoose = require('mongoose');
-const Post = require('../../models/Post');
+const Post = require('../../../../../models/Post');
 
-const apiurl = `https://api.${process.env.BRAND_DOMAIN}/v1/blog/posts/`;
+const apiurl = `https://api.${process.env.BRAND_DOMAIN}/blog/v1/posts/`;
 const fields = '_id title body';
 
-router.route('/blog/posts')
+router.route('/')
     .get(getAllPostsHandler)
     .post(addNewPostHandler);
 
-router.route('/blog/posts/:postId')
+router.route('/:postId')
     .get(getPostByIdHandler)
     .delete(DeletePostHandler)
     .patch(updatePostHandler);
@@ -125,7 +125,7 @@ function updatePostHandler(req, res, next) {
   for(const ops of req.body){
     updateOps[ops.propName] = ops.value;
   }
-  Post.update({_id: id}, {$set: updateOps})
+  Post.updateOne({_id: id}, {$set: updateOps})
     .exec()
     .then(result => {
       res.status(200).json({
