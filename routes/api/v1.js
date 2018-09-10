@@ -37,7 +37,17 @@ router.get('/blog/posts', (req, res, next) => {
     .then(docs => {
       const response = {
         count: docs.length,
-        posts: docs
+        posts: docs.map(doc => {
+          return {
+            _id: doc._id,
+            title: doc.title,
+            body: doc.body,
+            request: {
+              type: 'GET',
+              url: 'https://api.schandillia.com/v1/blog/posts/' + doc._id
+            }
+          }
+        })
       };
       res.status(200).json(response);
     })
