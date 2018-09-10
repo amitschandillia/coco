@@ -32,9 +32,14 @@ function postRouteHandler(req, res) {
 // Get all posts
 router.get('/blog/posts', (req, res, next) => {
   Post.find()
+    .select('_id title body')
     .exec()
     .then(docs => {
-      res.status(200).json(docs);
+      const response = {
+        count: docs.length,
+        posts: docs
+      };
+      res.status(200).json(response);
     })
     .catch(err => {
       res.status(500).json({error: err});
