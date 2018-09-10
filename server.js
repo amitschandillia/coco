@@ -28,7 +28,16 @@ app.prepare()
     const api_router = express.Router();
     const admin_router = express.Router();
 
-    mongoose.connect(process.env.MONGO_PATH_ATLAS_34, {useNewUrlParser: true});
+    mongoose.connect(
+      process.env.MONGO_PATH_ATLAS_34,
+      {
+        auth: {
+          user: process.env.MONGO_USERNAME,
+          password: process.env.MONGO_PASSWORD
+        },
+        useNewUrlParser: true
+      }
+    );
 
     server.use(compression())
     server.use(favicon(path.join(__dirname, 'static', 'images', 'icons', 'favicon.ico')))

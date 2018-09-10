@@ -29,26 +29,53 @@ function postRouteHandler(req, res) {
 
 
 
+// Get all posts
 router.get('/blog/posts', (req, res, next) => {
-  res.status(200).json({
-    message: "Testing get requests!"
-  });
+  Post.find()
+    .exec()
+    .then(docs => {
+      res.status(200).json(docs);
+    })
+    .catch(err => {
+      res.status(500).json({error: err});
+    });
 });
 
+// Get a post by id
+router.get('/blog/posts/:postId', (req, res, next) => {
+  const id = req.params.postId;
+  Post.findById(id)
+    .exec()
+    .then(doc => {
+      if(doc) {
+        res.status(200).json(doc);
+      } else {
+        res.status(404).json({message: 'Not found'});
+      }
+    })
+    .catch(err => {
+      res.status(500).json({error: err});
+    });
+});
 
+// Add a new blog post
 router.post('/blog/posts', (req, res, next) => {
   const post = new Post({
     _id: new mongoose.Types.ObjectId(),
     title: req.body.title,
     body: req.body.body
   });
-  post.save()
-    .then(result => console.log(result))
-    .catch(err => console.log(err));
-  res.status(201).json({
-    message: "Testing post requests!",
-    createdPost: post
-  });
+  post
+    .save()
+    .then(result => {
+      res.status(201).json({
+        message: 'Posted successfully',
+        createdPost: post
+      })
+    })
+    .catch(err => {
+      res.status(500).json({error: err});
+    });
 });
 
 
