@@ -34,7 +34,28 @@ app.prepare()
     server.use(bodyParser.urlencoded({ extended: false }));
     server.use(cookieParser());
     server.use(helmet());
-    server.use(cors());
+
+    // Configure CORS options
+    // var corsOptions = {
+    //   'origin': '*',
+    //   'methods': 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    //   'allowedHeaders': ['Origin', 'X-Requested-With', 'Content-Type', 'Accept', 'Authorization'],
+    //   'preflightContinue': true,
+    //   'optionsSuccessStatus': 200
+    // };
+    // server.use(cors());
+    server.use((req, res, next) => {
+      res.header('Access-Control-Allow-Origin', '*');
+      res.header(
+        'Access-Control-Allow-Headers',
+        'Origin, X-Requested-With, Content-Type, Accept, Authorization'
+      );
+      if(req.method === 'OPTIONS') {
+        res.header('Access-Control-Allow-Methods', 'PUT, POST, PATCH, DELETE, GET');
+        return res.status(200).json({});
+      }
+      next();
+    });
 
     // Subdomain routing
     server.use(subdomain('api', APIRoutes));

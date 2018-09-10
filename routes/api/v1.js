@@ -25,4 +25,27 @@ function postRouteHandler(req, res) {
     //handle POST route here
 }
 
+
+
+router.get('/blog/posts', (req, res, next) => {
+  res.status(200).json({
+    message: "Testing get requests!"
+  });
+});
+router.post('/blog/posts', (req, res, next) => {
+  const post = {
+    title: req.body.title,
+    body: req.body.body
+  }
+  res.status(201).json({
+    message: "Testing post requests!",
+    createdPost: post
+  });
+});
+
+
+
+
+
+
 module.exports = router;
