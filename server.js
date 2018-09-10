@@ -11,9 +11,9 @@ const expressSession = require('express-session');
 const RedisStore = require('connect-redis')(expressSession);
 const passport = require('passport');
 const favicon = require('serve-favicon');
-
 const helmet = require('helmet');
 const cors = require('cors');
+const mongoose = require('mongoose');
 const APIRoutes = require('./routes/api');
 const AdminRoutes = require('./routes/admin');
 // const config = require('./config/main');
@@ -28,6 +28,8 @@ app.prepare()
     const api_router = express.Router();
     const admin_router = express.Router();
 
+    mongoose.connect(process.env.MONGO_PATH_ATLAS_34, {useNewUrlParser: true});
+
     server.use(compression())
     server.use(favicon(path.join(__dirname, 'static', 'images', 'icons', 'favicon.ico')))
     server.use(bodyParser.json());
@@ -36,6 +38,7 @@ app.prepare()
     server.use(helmet());
 
     // Configure CORS options
+    // ---------------------------------------------------------------------
     // var corsOptions = {
     //   'origin': '*',
     //   'methods': 'GET,HEAD,PUT,PATCH,POST,DELETE',
@@ -56,13 +59,27 @@ app.prepare()
       }
       next();
     });
+    // ---------------------------------------------------------------------
 
     // Subdomain routing
+    // ---------------------------------------------------------------------
     server.use(subdomain('api', APIRoutes));
     server.use(subdomain('admin', AdminRoutes));
+    // ---------------------------------------------------------------------
 
+    // Custom build resources aliases
+    // ---------------------------------------------------------------------
+    server.get('/sw.js', (req, res) => {
+      res.set({'Content-Type': 'text/javascript'});
+      createReadStream('./offline/serviceWorker.js').pipe(res);
+    });
+    server.use('/_s', express.static(path.join(__dirname, '.build', 'static')));
+    server.use('/_f', express.static(path.join(__dirname, 'static')));
+    server.use('/favicon.ico', express.static(path.join(__dirname, 'static', 'images', 'icons', 'favicon.ico')));
+    server.use('/_next/webpack/static', express.static(path.join(__dirname, '.build', 'static')));
+    // ---------------------------------------------------------------------
 
-    // Routing examples
+    // Custom/dynamic routes
     // ---------------------------------------------------------------------
     // server.get('/a', (req, res) => {
     //   return app.render(req, res, '/b', req.query)
@@ -75,22 +92,13 @@ app.prepare()
     // })
     // ---------------------------------------------------------------------
 
-    server.get('/sw.js', (req, res) => {
-      res.set({'Content-Type': 'text/javascript'});
-      createReadStream('./offline/serviceWorker.js').pipe(res);
-    })
 
-    // Custom build resources aliases
-    // ---------------------------------------------------------------
-    server.use('/_s', express.static(path.join(__dirname, '.build', 'static')));
-    server.use('/_f', express.static(path.join(__dirname, 'static')));
-    server.use('/favicon.ico', express.static(path.join(__dirname, 'static', 'images', 'icons', 'favicon.ico')));
-    server.use('/_next/webpack/static', express.static(path.join(__dirname, '.build', 'static')));
-    // ---------------------------------------------------------------
-
+    // Default route (not to be edited)
+    // ---------------------------------------------------------------------
     server.get('*', (req, res) => {
       return handle(req, res)
     })
+    // ---------------------------------------------------------------------
 
     server.listen(process.env.PORT, (err) => {
       if (err) throw err

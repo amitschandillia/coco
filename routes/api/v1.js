@@ -1,5 +1,7 @@
 const express = require('express');
 const router = express.Router();
+const mongoose = require('mongoose');
+const Post = require('../../models/Post');
 
 var posts = [{
   title: 'First Post',
@@ -32,11 +34,17 @@ router.get('/blog/posts', (req, res, next) => {
     message: "Testing get requests!"
   });
 });
+
+
 router.post('/blog/posts', (req, res, next) => {
-  const post = {
+  const post = new Post({
+    _id: new mongoose.Types.ObjectId(),
     title: req.body.title,
     body: req.body.body
-  }
+  });
+  post.save()
+    .then(result => console.log(result))
+    .catch(err => console.log(err));
   res.status(201).json({
     message: "Testing post requests!",
     createdPost: post
