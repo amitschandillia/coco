@@ -88,7 +88,7 @@ module.exports = {
         });
     },
 
-    DeletePostHandler: (req, res, next) => {
+    deletePostHandler: (req, res, next) => {
       const id = req.params.postId;
       Post.deleteOne({_id: id})
         .exec()
