@@ -5,6 +5,7 @@ const mongoose = require('mongoose');
 const Post = require('../../models/Post');
 
 const apiurl = `https://api.${process.env.BRAND_DOMAIN}/v1/blog/posts/`;
+const fields = '_id title body';
 
 router.route('/blog/posts')
     .get(getAllPostsHandler)
@@ -18,7 +19,7 @@ router.route('/blog/posts/:postId')
 
 function getAllPostsHandler(req, res, next) {
   Post.find()
-    .select('_id title body')
+    .select(fields)
     .exec()
     .then(docs => {
       const response = {
@@ -74,7 +75,7 @@ function addNewPostHandler(req, res, next) {
 function getPostByIdHandler(req, res, next) {
   const id = req.params.postId;
   Post.findById(id)
-    .select('_id title body')
+    .select(fields)
     .exec()
     .then(doc => {
       if(doc) {

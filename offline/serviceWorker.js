@@ -1,4 +1,4 @@
-const CACHE_NAME = "v.133";
+const CACHE_NAME = "v.134";
 const URLSTOCACHE = [
 	"/",
 	"/about",
@@ -17,7 +17,7 @@ const URLSTOCACHE = [
 	"/_f/images/sidenavHeader.jpg",
 	"/_f/scripts/materialize.min.js",
 	"/_f/manifest.json",
-	"/_s/cca2932036e8292964065776c12351f6.min.css"
+	"/_s/dd8baec37a0606b049745854ef46ed78.min.css"
 ];
 // Call install event
 self.addEventListener("install", e => {
