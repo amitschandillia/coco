@@ -1,0 +1,14 @@
+{
+  "extends": "airbnb",
+  "env": {
+    "browser": true,
+    "node": true,
+    "mongo": true
+  },
+  "rules": {
+    "no-unused-vars": ["error", { "argsIgnorePattern": "next" }],
+    "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
+    "react/react-in-jsx-scope": 0,
+    "no-underscore-dangle": [2, { "allow": ["_id"] }]
+  }
+}

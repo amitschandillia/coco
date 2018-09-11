@@ -1,23 +1,24 @@
+
 import React, { Component, Fragment } from 'react';
 import Head from 'next/head';
-import Image from '../components/Image';
+import Image from '../components/Image'; // eslint-disable-line no-unused-vars
 
 import stylesheet from '../static/styles/main.scss';
 
 class Index extends Component {
 
-  componentDidMount = () => {
-    if ("serviceWorker" in navigator) { navigator.serviceWorker.register("/sw.js"); }
+  componentDidMount() {
+    if ('serviceWorker' in navigator) { navigator.serviceWorker.register('/sw.js'); }
   }
 
   render() {
-    var title = 'Home | New Project Coco PWA Prototype';
-    var description = 'This is the description for the homepage';
+    const title = 'Home | New Project Coco PWA Prototype';
+    const description = 'This is the description for the homepage';
     return (
       <Fragment>
         <Head>
           <title>{ title }</title>
-          <meta name="description" content={ description } key="description" />
+          <meta name="description" content={description} key="description" />
         </Head>
         <h1>Home page</h1>
         <button className='waves-effect waves-light btn btn-large blue'>
@@ -35,7 +36,7 @@ class Index extends Component {
           </form>
         </div>
       </Fragment>
-    )
+    );
   }
 }
 

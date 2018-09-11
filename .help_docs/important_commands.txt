@@ -1,0 +1,9 @@
+ pm2 flush && pm2 delete all
+
+ pm2 flush && clear && cd ~/coco && rm -Rf .build && node prepare.js && yarn build && pm2 start server.js --name "Coco"
+
+ pm2 logs
+
+git add . && git commit -m "Restructured routes and controllers." && git push origin master
+
+clear && ./node_modules/.bin/eslint server.js

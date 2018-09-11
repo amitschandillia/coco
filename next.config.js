@@ -1,6 +1,7 @@
 const path = require('path');
 const glob = require('glob');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
+// eslint-disable-next-line import/no-extraneous-dependencies
 const webpack = require('webpack');
 require('dotenv').config();
 
@@ -46,7 +47,7 @@ module.exports = {
         loader: 'file-loader?outputPath=static/',
         options: {
           name: '[path][name].[ext]',
-        }
+        },
       },
       {
         test: /\.(png|jpe?g|gif)$/i,

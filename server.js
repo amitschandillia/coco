@@ -1,74 +1,47 @@
 const subdomain = require('express-subdomain');
-const express = require('express')
-require('dotenv').config()
-const path = require('path')
-const { createReadStream } = require('fs')
-const next = require('next')
-const compression = require('compression')
+const express = require('express');
+require('dotenv').config();
+const path = require('path');
+const { createReadStream } = require('fs');
+const next = require('next');
+const compression = require('compression');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
-const expressSession = require('express-session');
-const RedisStore = require('connect-redis')(expressSession);
-const passport = require('passport');
+// const expressSession = require('express-session');
+// const RedisStore = require('connect-redis')(expressSession);
+// const passport = require('passport');
 const favicon = require('serve-favicon');
 const helmet = require('helmet');
-const cors = require('cors');
 const mongoose = require('mongoose');
 const APIRoutes = require('./routes/api');
 const AdminRoutes = require('./routes/admin');
 // const config = require('./config/main');
 
-const dev = process.env.NODE_ENV !== 'production'
-const app = next({ dev })
-const handle = app.getRequestHandler()
+const dev = process.env.NODE_ENV !== 'production';
+const app = next({ dev });
+const handle = app.getRequestHandler();
 
 app.prepare()
   .then(() => {
-    const server = express()
-    const api_router = express.Router();
-    const admin_router = express.Router();
+    const server = express();
 
     mongoose.connect(
       process.env.MONGO_PATH_ATLAS_34,
       {
         auth: {
           user: process.env.MONGO_USERNAME,
-          password: process.env.MONGO_PASSWORD
+          password: process.env.MONGO_PASSWORD,
         },
-        useNewUrlParser: true
-      }
+        useNewUrlParser: true,
+      },
     );
 
-    server.use(compression())
-    server.use(favicon(path.join(__dirname, 'static', 'images', 'icons', 'favicon.ico')))
+    server.use(compression());
+    server.use(favicon(path.join(__dirname, 'static', 'images', 'icons', 'favicon.ico')));
     server.use(bodyParser.json());
     server.use(bodyParser.urlencoded({ extended: false }));
     server.use(cookieParser());
     server.use(helmet());
-
-    // Configure CORS options
-    // ---------------------------------------------------------------------
-    // var corsOptions = {
-    //   'origin': '*',
-    //   'methods': 'GET,HEAD,PUT,PATCH,POST,DELETE',
-    //   'allowedHeaders': ['Origin', 'X-Requested-With', 'Content-Type', 'Accept', 'Authorization'],
-    //   'preflightContinue': true,
-    //   'optionsSuccessStatus': 200
-    // };
-    // server.use(cors());
-    server.use((req, res, next) => {
-      res.header('Access-Control-Allow-Origin', '*');
-      res.header(
-        'Access-Control-Allow-Headers',
-        'Origin, X-Requested-With, Content-Type, Accept, Authorization'
-      );
-      if(req.method === 'OPTIONS') {
-        res.header('Access-Control-Allow-Methods', 'PUT, POST, PATCH, DELETE, GET');
-        return res.status(200).json({});
-      }
-      next();
-    });
-    // ---------------------------------------------------------------------
 
     // Subdomain routing
     // ---------------------------------------------------------------------
@@ -79,7 +52,7 @@ app.prepare()
     // Custom build resources aliases
     // ---------------------------------------------------------------------
     server.get('/sw.js', (req, res) => {
-      res.set({'Content-Type': 'text/javascript'});
+      res.set({ 'Content-Type': 'text/javascript' });
       createReadStream('./offline/serviceWorker.js').pipe(res);
     });
     server.use('/_s', express.static(path.join(__dirname, '.build', 'static')));
@@ -104,15 +77,13 @@ app.prepare()
 
     // Default route (not to be edited)
     // ---------------------------------------------------------------------
-    server.get('*', (req, res) => {
-      return handle(req, res)
-    })
+    server.get('*', (req, res) => handle(req, res));
     // ---------------------------------------------------------------------
 
     server.listen(process.env.PORT, (err) => {
-      if (err) throw err
+      if (err) throw err;
       console.log(`> Listening on port ${process.env.PORT}...`); // eslint-disable-line no-console
-    })
+    });
   })
   .catch((ex) => {
     console.error(ex.stack); // eslint-disable-line no-console

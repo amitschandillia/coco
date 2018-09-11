@@ -2,22 +2,25 @@ const fs = require('fs');
 const path = require('path');
 require('dotenv').config();
 const crypto = require('crypto');
-const editJsonFile = require("edit-json-file");
+const editJsonFile = require('edit-json-file');
 
 // get hash seed
-const ep = String((new Date()).getTime());
+const seed = String((new Date()).getTime());
 
 // create hash
-const logohash = crypto.createHash('md5').update(ep + process.env.NAVBAR_LOGO).digest('hex');
-const csshash = crypto.createHash('md5').update(ep + process.env.CSS).digest('hex');
+const logohash = crypto.createHash('md5').update(seed + process.env.NAVBAR_LOGO).digest('hex');
+const csshash = crypto.createHash('md5').update(seed + process.env.CSS).digest('hex');
 
 // rename logo file
-// fs.rename(`./static/img/${process.env.NAVBAR_LOGO}.svg`, `./static/img/${logohash}.svg`, (err) => {
-  // eslint-disable-next-line no-console
-  // if (err) console.log(`ERROR: ${err}`);
+// fs.rename(
+//   `./static/img/${process.env.NAVBAR_LOGO}.svg`,
+//   `./static/img/${logohash}.svg`,
+//   (err) => {
+//   eslint-disable-next-line no-console
+//   if (err) console.log(`ERROR: ${err}`);
 // });
 
-// update .env
+// Update .env
 fs.readFile('./.env', 'utf8', (err, data) => {
   if (err) throw err;
   // update new env value for logo
@@ -29,10 +32,6 @@ fs.readFile('./.env', 'utf8', (err, data) => {
     if (error) throw err;
   });
 });
-
-
-
-
 
 // List out files
 // var walk = function(dir, done) {
@@ -67,66 +66,67 @@ fs.readFile('./.env', 'utf8', (err, data) => {
 //     console.log(util.inspect(results, { maxArrayLength: null }));
 // });
 
-
-
-
 // PREPARE CACHE FILES AND SERVICE WORKER
-var cachedItems = ['/'];
+// -----------------------------------------------------------------------------
+const cachedItems = ['/'];
 function walkSync(currentDirPath, callback) {
-    fs.readdirSync(currentDirPath).forEach(function (name) {
-        var filePath = path.join(currentDirPath, name);
-        var stat = fs.statSync(filePath);
-        if (stat.isFile()) {
-            callback(filePath, stat);
-        } else if (stat.isDirectory()) {
-            walkSync(filePath, callback);
-        }
-    });
+  fs.readdirSync(currentDirPath).forEach((name) => {
+    const filePath = path.join(currentDirPath, name);
+    const stat = fs.statSync(filePath);
+    if (stat.isFile()) {
+      callback(filePath, stat);
+    } else if (stat.isDirectory()) {
+      walkSync(filePath, callback);
+    }
+  });
 }
-
-walkSync('./pages/', function(filePath, stat) {
-  cachedItem = filePath.substr(5);
-  if(cachedItem.indexOf('_') == -1) {
-    cachedItems.push(cachedItem.substr(0, cachedItem.length-3));
+// Cache pages
+walkSync('./pages/', (filePath) => {
+  const cachedItem = filePath.substr(5);
+  if (cachedItem.indexOf('_') === -1) {
+    cachedItems.push(cachedItem.substr(0, cachedItem.length - 3));
   }
 });
-walkSync('./static/images', function(filePath, stat) {
-  cachedItem = '/_f' + filePath.substr(6);
-  if(cachedItem.indexOf('favicon.ico') != -1) cachedItem = '/favicon.ico';
+// Cache images and favicon
+walkSync('./static/images', (filePath) => {
+  let cachedItem = `/_f${filePath.substr(6)}`;
+  if (cachedItem.indexOf('favicon.ico') !== -1) cachedItem = '/favicon.ico';
   cachedItems.push(cachedItem);
 });
+// Cache style assets and manifest
 cachedItems.push('/_f/scripts/materialize.min.js', '/_f/manifest.json');
 cachedItems.push(`/_s/${csshash}.min.css`);
-
+// -----------------------------------------------------------------------------
 
 // prepare URLSTOCACHE
-var urls2cache = '';
-for(var i in cachedItems){
-  urls2cache += '\t"' + cachedItems[i] + '",\n';
+let urls2cache = '';
+for (let i = 0; i < cachedItems.length; i += 1) {
+  urls2cache += `  '${cachedItems[i]}',\n`;
 }
-urls2cache = urls2cache.substr(0, urls2cache.length-2);
-urls2cache = 'const URLSTOCACHE = [\n' + urls2cache + '\n]';
+urls2cache = urls2cache.substr(0, urls2cache.length - 2);
+urls2cache = `const URLSTOCACHE = [\n${urls2cache},\n]`;
 
 // read serviceWorker.js
-var sw = fs.readFileSync('./offline/serviceWorker.js', 'utf8');
+let sw = fs.readFileSync('./offline/serviceWorker.js', 'utf8');
 
 // retrieve and prepare CACHE_NAME (version string)
-var swarray = sw.split(';');
-for(line in swarray) {
-  if(swarray[line].indexOf('const CACHE_NAME') != -1) var cachenameindex = line;
-  if(swarray[line].indexOf('const URLSTOCACHE') != -1) var urlstocacheindex = line;
+const swarray = sw.split(';');
+let cachenameindex = '';
+let urlstocacheindex = '';
+for (let i = 0; i < swarray.length; i += 1) {
+  if (swarray[i].indexOf('const CACHE_NAME') !== -1) cachenameindex = i;
+  if (swarray[i].indexOf('const URLSTOCACHE') !== -1) urlstocacheindex = i;
 }
 swarray[urlstocacheindex] = urls2cache;
-var versionarray = swarray[cachenameindex].split('.');
-versionstring = versionarray[0];
-versionval = versionarray[1].substr(0, versionarray[1].length - 1);
-versionval = parseInt(versionval) + 1;
-swarray[cachenameindex] = versionstring + '.' + versionval + '"';
+const versionarray = swarray[cachenameindex].split('.');
+const versionstring = versionarray[0];
+let versionval = versionarray[1].substr(0, versionarray[1].length - 1);
+versionval = parseInt(versionval, 10) + 1;
+swarray[cachenameindex] = `${versionstring}.${versionval}'`;
 
-for(item in swarray) {
-  swarray[item] = swarray[item].trim();
+for (let i = 0; i < swarray.length; i += 1) {
+  swarray[i] = swarray[i].trim();
 }
-
 
 sw = swarray.join(';\n');
 
@@ -135,15 +135,13 @@ fs.writeFile(
   sw,
   'utf8', (err) => {
     if (err) throw err;
-  }
+  },
 );
 
-
-
 // prepare manifest.json
-let file = editJsonFile(`${__dirname}/static/manifest.json`);
-file.set("name", `${process.env.NAME}`);
-file.set("short_name", `${process.env.SHORT_NAME}`);
-file.set("theme_color", `${process.env.THEME_COLOR}`);
-file.set("background_color", `${process.env.BACKGROUND_COLOR}`);
+const file = editJsonFile(`${__dirname}/static/manifest.json`);
+file.set('name', `${process.env.NAME}`);
+file.set('short_name', `${process.env.SHORT_NAME}`);
+file.set('theme_color', `${process.env.THEME_COLOR}`);
+file.set('background_color', `${process.env.BACKGROUND_COLOR}`);
 file.save();

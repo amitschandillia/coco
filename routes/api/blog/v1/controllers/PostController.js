@@ -1,46 +1,45 @@
 require('dotenv').config();
 const mongoose = require('mongoose');
-
 const Post = require('../../../../../models/Post');
+
 const apiurl = `https://api.${process.env.BRAND_DOMAIN}/blog/v1/posts/`;
 const fields = '_id title body';
 
-exports.getAllPostsHandler = (req, res, next) => {
+exports.getAllPostsHandler = (req, res) => {
   Post.find()
     .select(fields)
     .exec()
-    .then(docs => {
+    .then((docs) => {
       const response = {
         count: docs.length,
-        posts: docs.map(doc => {
-          return {
+        posts: docs.map(doc => (
+          {
             _id: doc._id,
             title: doc.title,
             body: doc.body,
             request: {
               type: 'GET',
               description: 'Get this post',
-              url: `${apiurl}${doc._id}`
-            }
-          }
-        })
+              url: `${apiurl}${doc._id}`,
+            },
+          })),
       };
       res.status(200).json(response);
     })
-    .catch(err => {
-      res.status(500).json({error: err});
+    .catch((err) => {
+      res.status(500).json({ error: err });
     });
-},
+};
 
-exports.addNewPostHandler = (req, res, next) => {
+exports.addNewPostHandler = (req, res) => {
   const post = new Post({
     _id: new mongoose.Types.ObjectId(),
     title: req.body.title,
-    body: req.body.body
+    body: req.body.body,
   });
   post
     .save()
-    .then(result => {
+    .then((result) => {
       res.status(201).json({
         message: 'Post added successfully',
         createdPost: {
@@ -50,23 +49,23 @@ exports.addNewPostHandler = (req, res, next) => {
           request: {
             type: 'GET',
             description: 'Get this post',
-            url: `${apiurl}${result._id}`
-          }
-        }
-      })
+            url: `${apiurl}${result._id}`,
+          },
+        },
+      });
     })
-    .catch(err => {
-      res.status(500).json({error: err});
+    .catch((err) => {
+      res.status(500).json({ error: err });
     });
-},
+};
 
-exports.getPostByIdHandler = (req, res, next) => {
+exports.getPostByIdHandler = (req, res) => {
   const id = req.params.postId;
   Post.findById(id)
     .select(fields)
     .exec()
-    .then(doc => {
-      if(doc) {
+    .then((doc) => {
+      if (doc) {
         res.status(200).json({
           post: {
             _id: doc._id,
@@ -75,184 +74,57 @@ exports.getPostByIdHandler = (req, res, next) => {
             request: {
               type: 'GET',
               description: 'Get all posts',
-              url: apiurl
-            }
-          }
+              url: apiurl,
+            },
+          },
         });
       } else {
-        res.status(404).json({message: 'Not found'});
+        res.status(404).json({ message: 'Not found' });
       }
     })
-    .catch(err => {
-      res.status(500).json({error: err});
+    .catch((err) => {
+      res.status(500).json({ error: err });
     });
-},
+};
 
-exports.deletePostHandler = (req, res, next) => {
+exports.deletePostHandler = (req, res) => {
   const id = req.params.postId;
-  Post.deleteOne({_id: id})
+  Post.deleteOne({ _id: id })
     .exec()
-    .then(result => {
+    .then(() => {
       res.status(200).json({
         message: 'Post deleted successfully!',
         request: {
           type: 'GET',
           description: 'Get all posts',
-          url: apiurl
-        }
+          url: apiurl,
+        },
       });
     })
-    .catch(err => {
-      res.status(500).json({error: err});
+    .catch((err) => {
+      res.status(500).json({ error: err });
     });
-},
+};
 
-exports.updatePostHandler = (req, res, next) => {
+exports.updatePostHandler = (req, res) => {
   const id = req.params.postId;
   const updateOps = {};
-  for(const ops of req.body){
-    updateOps[ops.propName] = ops.value;
-  }
-  Post.updateOne({_id: id}, {$set: updateOps})
+  req.body.forEach((ops) => {
+    updateOps[ops.field] = ops.value;
+  });
+  Post.updateOne({ _id: id }, { $set: updateOps })
     .exec()
-    .then(result => {
+    .then(() => {
       res.status(200).json({
         message: 'Post updated successfully',
         request: {
           type: 'GET',
           description: 'Get this post',
-          url: apiurl + id
-        }
+          url: apiurl + id,
+        },
       });
     })
-    .catch(err => {
-      res.status(500).json({error: err});
+    .catch((err) => {
+      res.status(500).json({ error: err });
     });
-}
-
-// module.exports = {
-//     getAllPostsHandler: (req, res, next) => {
-//       Post.find()
-//         .select(fields)
-//         .exec()
-//         .then(docs => {
-//           const response = {
-//             count: docs.length,
-//             posts: docs.map(doc => {
-//               return {
-//                 _id: doc._id,
-//                 title: doc.title,
-//                 body: doc.body,
-//                 request: {
-//                   type: 'GET',
-//                   description: 'Get this post',
-//                   url: `${apiurl}${doc._id}`
-//                 }
-//               }
-//             })
-//           };
-//           res.status(200).json(response);
-//         })
-//         .catch(err => {
-//           res.status(500).json({error: err});
-//         });
-//     },
-//
-//     addNewPostHandler: (req, res, next) => {
-//       const post = new Post({
-//         _id: new mongoose.Types.ObjectId(),
-//         title: req.body.title,
-//         body: req.body.body
-//       });
-//       post
-//         .save()
-//         .then(result => {
-//           res.status(201).json({
-//             message: 'Post added successfully',
-//             createdPost: {
-//               _id: result._id,
-//               title: result.title,
-//               body: result.body,
-//               request: {
-//                 type: 'GET',
-//                 description: 'Get this post',
-//                 url: `${apiurl}${result._id}`
-//               }
-//             }
-//           })
-//         })
-//         .catch(err => {
-//           res.status(500).json({error: err});
-//         });
-//     },
-//
-//     getPostByIdHandler: (req, res, next) => {
-//       const id = req.params.postId;
-//       Post.findById(id)
-//         .select(fields)
-//         .exec()
-//         .then(doc => {
-//           if(doc) {
-//             res.status(200).json({
-//               post: {
-//                 _id: doc._id,
-//                 title: doc.title,
-//                 body: doc.body,
-//                 request: {
-//                   type: 'GET',
-//                   description: 'Get all posts',
-//                   url: apiurl
-//                 }
-//               }
-//             });
-//           } else {
-//             res.status(404).json({message: 'Not found'});
-//           }
-//         })
-//         .catch(err => {
-//           res.status(500).json({error: err});
-//         });
-//     },
-//
-//     deletePostHandler: (req, res, next) => {
-//       const id = req.params.postId;
-//       Post.deleteOne({_id: id})
-//         .exec()
-//         .then(result => {
-//           res.status(200).json({
-//             message: 'Post deleted successfully!',
-//             request: {
-//               type: 'GET',
-//               description: 'Get all posts',
-//               url: apiurl
-//             }
-//           });
-//         })
-//         .catch(err => {
-//           res.status(500).json({error: err});
-//         });
-//     },
-//
-//     updatePostHandler: (req, res, next) => {
-//       const id = req.params.postId;
-//       const updateOps = {};
-//       for(const ops of req.body){
-//         updateOps[ops.propName] = ops.value;
-//       }
-//       Post.updateOne({_id: id}, {$set: updateOps})
-//         .exec()
-//         .then(result => {
-//           res.status(200).json({
-//             message: 'Post updated successfully',
-//             request: {
-//               type: 'GET',
-//               description: 'Get this post',
-//               url: apiurl + id
-//             }
-//           });
-//         })
-//         .catch(err => {
-//           res.status(500).json({error: err});
-//         });
-//     }
-// };
+};
