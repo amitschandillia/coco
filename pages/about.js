@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import Head from 'next/head';
 // import $ from 'jquery';
-import stylesheet from '../static/styles/main.scss';
+import '../static/styles/main.scss';
 
 class About extends Component {
   componentDidMount() {

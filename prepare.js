@@ -8,8 +8,18 @@ const editJsonFile = require('edit-json-file');
 const seed = String((new Date()).getTime());
 
 // create hash
-const logohash = crypto.createHash('md5').update(seed + process.env.NAVBAR_LOGO).digest('hex');
-const csshash = crypto.createHash('md5').update(seed + process.env.CSS).digest('hex');
+const logohash = crypto
+  .createHash('md5')
+  .update(seed + process.env.NAVBAR_LOGO)
+  .digest('hex');
+const csshash = crypto
+  .createHash('md5')
+  .update(seed + process.env.CSS)
+  .digest('hex');
+const swcachehash = crypto
+  .createHash('md5')
+  .update(seed + process.env.SW_CACHE_VERSION)
+  .digest('hex');
 
 // rename logo file
 // fs.rename(
@@ -27,6 +37,8 @@ fs.readFile('./.env', 'utf8', (err, data) => {
   let result = data.replace(`${process.env.NAVBAR_LOGO}`, `${logohash}`);
   // update new env value for css
   result = result.replace(`${process.env.CSS}`, `${csshash}`);
+  // update new env value for service worker cache
+  result = result.replace(`${process.env.SW_CACHE_VERSION}`, `${swcachehash}`);
   // write updated data to .env
   fs.writeFile('./.env', result, 'utf8', (error) => {
     if (error) throw err;
@@ -99,37 +111,31 @@ cachedItems.push(`/_s/${csshash}.min.css`);
 // -----------------------------------------------------------------------------
 
 // prepare URLSTOCACHE
-let urls2cache = '';
+let urlsToCache = '';
 for (let i = 0; i < cachedItems.length; i += 1) {
-  urls2cache += `  '${cachedItems[i]}',\n`;
+  urlsToCache += `  '${cachedItems[i]}',\n`;
 }
-urls2cache = urls2cache.substr(0, urls2cache.length - 2);
-urls2cache = `const URLSTOCACHE = [\n${urls2cache},\n]`;
+urlsToCache = urlsToCache.substr(0, urlsToCache.length - 2);
+urlsToCache = `const URLS_TO_CACHE = [\n${urlsToCache},\n]`;
+
+// prepare CACHE_NAME
+const cacheName = `const CACHE_NAME = '${swcachehash}'`;
 
 // read serviceWorker.js
 let sw = fs.readFileSync('./offline/serviceWorker.js', 'utf8');
 
-// retrieve and prepare CACHE_NAME (version string)
+// update CACHE_NAME and URLSTOCACHE
 const swarray = sw.split(';');
-let cachenameindex = '';
-let urlstocacheindex = '';
-for (let i = 0; i < swarray.length; i += 1) {
-  if (swarray[i].indexOf('const CACHE_NAME') !== -1) cachenameindex = i;
-  if (swarray[i].indexOf('const URLSTOCACHE') !== -1) urlstocacheindex = i;
-}
-swarray[urlstocacheindex] = urls2cache;
-const versionarray = swarray[cachenameindex].split('.');
-const versionstring = versionarray[0];
-let versionval = versionarray[1].substr(0, versionarray[1].length - 1);
-versionval = parseInt(versionval, 10) + 1;
-swarray[cachenameindex] = `${versionstring}.${versionval}'`;
+swarray[0] = cacheName;
+swarray[1] = urlsToCache;
 
+// tidy up the array and merge it into a string
 for (let i = 0; i < swarray.length; i += 1) {
   swarray[i] = swarray[i].trim();
 }
-
 sw = swarray.join(';\n');
 
+// save updated contents to offline/serviceWorker.js
 fs.writeFile(
   './offline/serviceWorker.js',
   sw,
@@ -140,8 +146,8 @@ fs.writeFile(
 
 // prepare manifest.json
 const file = editJsonFile(`${__dirname}/static/manifest.json`);
-file.set('name', `${process.env.NAME}`);
-file.set('short_name', `${process.env.SHORT_NAME}`);
-file.set('theme_color', `${process.env.THEME_COLOR}`);
-file.set('background_color', `${process.env.BACKGROUND_COLOR}`);
+file.set('name', `${process.env.MANIFEST_NAME}`);
+file.set('short_name', `${process.env.MANIFEST_SHORT_NAME}`);
+file.set('theme_color', `${process.env.MANIFEST_THEME_COLOR}`);
+file.set('background_color', `${process.env.MANIFEST_BACKGROUND_COLOR}`);
 file.save();

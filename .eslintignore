@@ -6,6 +6,3 @@ offline/*
 static/*
 .env
 package.json
-
-
-routes/test.js

@@ -3,7 +3,7 @@ import React, { Component, Fragment } from 'react';
 import Head from 'next/head';
 import Image from '../components/Image'; // eslint-disable-line no-unused-vars
 
-import stylesheet from '../static/styles/main.scss';
+import '../static/styles/main.scss';
 
 class Index extends Component {
 
