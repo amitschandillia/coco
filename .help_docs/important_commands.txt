@@ -4,6 +4,6 @@ pm2 flush && clear && cd ~/coco && rm -Rf .build && node prepare.js && yarn buil
 
 pm2 logs
 
-git add . && git commit -m "Restructured routes and controllers." && git push origin master
+clear && cd ~/coco && git add . && git commit -m "commit-message" && git push origin master
 
-clear && ./node_modules/.bin/eslint server.js
+clear && cd ~/coco && ./node_modules/.bin/eslint server.js

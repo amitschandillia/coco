@@ -45,39 +45,6 @@ fs.readFile('./.env', 'utf8', (err, data) => {
   });
 });
 
-// List out files
-// var walk = function(dir, done) {
-//     var results = [];
-//     fs.readdir(dir, function(err, list) {
-//         if (err) return done(err);
-//         var i = 0;
-//         (function next() {
-//             var file = list[i++];
-//             if (!file) return done(null, results);
-//             //file = dir + '/' + file;
-//             file = path.resolve(dir, file);
-//             fs.stat(file, function(err, stat) {
-//                 if (stat && stat.isDirectory()) {
-//                     walk(file, function(err, res) {
-//                         results = results.concat(res);
-//                         next();
-//                     });
-//                 }
-//                 else {
-//                     file = file.replace('./static/images/icons', '');
-//                     results.push(file);
-//                     next();
-//                 }
-//             });
-//         })();
-//     });
-// };
-// var mydir = path.resolve('./static/images/icons');
-// walk(mydir, function(err, results) {
-//     if (err) throw err;
-//     console.log(util.inspect(results, { maxArrayLength: null }));
-// });
-
 // PREPARE CACHE FILES AND SERVICE WORKER
 // -----------------------------------------------------------------------------
 const cachedItems = ['/'];

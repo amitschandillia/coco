@@ -15,6 +15,7 @@ const helmet = require('helmet');
 const mongoose = require('mongoose');
 const APIRoutes = require('./routes/api');
 const AdminRoutes = require('./routes/admin');
+const GraphRoutes = require('./routes/graph');
 // const config = require('./config/main');
 
 const dev = process.env.NODE_ENV !== 'production';
@@ -47,6 +48,7 @@ app.prepare()
     // ---------------------------------------------------------------------
     server.use(subdomain('api', APIRoutes));
     server.use(subdomain('admin', AdminRoutes));
+    server.use(subdomain('graph', GraphRoutes));
     // ---------------------------------------------------------------------
 
     // Custom build resources aliases
