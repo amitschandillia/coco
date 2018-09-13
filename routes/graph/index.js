@@ -2,17 +2,10 @@ const express = require('express');
 
 const router = express.Router();
 
-function getRouteHandler(req, res) {
-  // handle GET route here
-  res.send('Welcome to graph!');
-}
+const graphqlHTTP = require('express-graphql');
 
-function postRouteHandler(req, res) { // eslint-disable-line no-unused-vars
-  // handle POST route here
-}
-
-router.route('/')
-  .get(getRouteHandler)
-  .post(postRouteHandler);
+router.use('/', graphqlHTTP({
+  
+}));
 
 module.exports = router;
