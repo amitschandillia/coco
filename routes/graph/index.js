@@ -1,11 +1,13 @@
 const express = require('express');
+const graphqlHTTP = require('express-graphql');
+const schema = require('./schemas/schema');
+const mongoose = require('mongoose');
 
 const router = express.Router();
 
-const graphqlHTTP = require('express-graphql');
-
 router.use('/', graphqlHTTP({
-  
+  schema,
+  graphiql: true
 }));
 
 module.exports = router;
