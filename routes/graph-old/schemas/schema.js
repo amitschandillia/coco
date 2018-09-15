@@ -1,9 +1,3 @@
-const graphql = require('graphql');
-const Book = require('../../../models/book');
-const Author = require('../../../models/author');
-
-const {BookType, AuthorType} = require('../types');
-
 const {
   GraphQLObjectType,
   GraphQLString,
@@ -12,7 +6,14 @@ const {
   GraphQLInt,
   GraphQLList,
   GraphQLNonNull,
-} = graphql;
+} = require('graphql');
+const Book = require('../../../models/book');
+const Author = require('../../../models/author');
+const {BookType, AuthorType} = require('../types');
+const bookQuery = require('../queries/book');
+const booksQuery = require('../queries/books');
+const authorQuery = require('../queries/author');
+const authorsQuery = require('../queries/authors');
 
 // TYPES
 //------------------------------------------------------------------------------------------------------
@@ -48,41 +49,13 @@ const {
 //   }),
 // });
 
-// QUERIES
-//------------------------------------------------------------------------------------------------------
 const RootQuery = new GraphQLObjectType({
   name: 'RootQueryType',
   fields: {
-    book: {
-      type: BookType,
-      args: { id: { type: GraphQLID } },
-      resolve(parent, args) {
-        // code to get data from db
-        return Book.findById(args.id);
-      },
-    },
-    author: {
-      type: AuthorType,
-      args: { id: { type: GraphQLID } },
-      resolve(parent, args) {
-        // code to get data from db
-        return Author.findById(args.id);
-      },
-    },
-    books: {
-      type: new GraphQLList(BookType),
-      resolve(parent, args) {
-        // code to get data from db
-        return Book.find({});
-      },
-    },
-    authors: {
-      type: new GraphQLList(AuthorType),
-      resolve(parent, args) {
-        // code to get data from db
-        return Author.find({});
-      }
-    },
+    book: bookQuery,
+    books: booksQuery,
+    author: authorQuery,
+    authors: authorsQuery,
   },
 });
 

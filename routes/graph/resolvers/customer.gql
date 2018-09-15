@@ -1,0 +1,8 @@
+Query: {
+  hello: (root, args, context) => {
+    return `Hello ${args.name}!`;
+  },
+  getPerson: (root, args, context) => {
+    return {name: 'Bob', age: 54};
+  },
+}

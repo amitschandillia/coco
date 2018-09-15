@@ -1,0 +1,33 @@
+posts: {
+  _id: {type: ID!, description: 'Unique post ID'},
+  slug: {type: String!, description: 'Unique URL slug'},
+  title: {type: String!, description: 'Main post title'},
+  title_secondary: {type: String!, description: 'Secondary post title'},
+  excerpt: {type: String!, description: 'Post text excerpt'},
+  readingtime: {type: Int!, description: 'Reading time in minutes'},
+  time: {
+    created: {type: String!, description: 'Date-time in UTC the post was created'},
+    modified: {type: String!, description: 'Date-time in UTC the post was last modified'},
+  },
+  author: {
+    id: {type: ID!, description: 'Unique ID mapped to the authors collection'},
+    name: {type: String!, description: 'Author name for the given ID'},
+  },
+  published: {type: Boolean!, description: 'True if the post is public'},
+  tags: [
+    id: {type: ID!, description: 'Unique ID mapped to the tags collection'},
+    name: {type: String!, description: 'Tag label for the given ID'},
+  ]!,
+  category: {
+    id: {type: ID!, description: 'Unique ID mapped to the categories collection'},
+    name: {type: String!, description: 'Category label for the given ID'},
+  },
+  featuredimages: {
+    thumbnail: {type: String!, description: 'URL of featured image'},
+  },
+  stats: {
+    comments: {type: Int!, description: 'Number of comments'},
+    likes: {type: Int!, description: 'Number of likes'},
+    bookmarks: {type: Int!, description: 'Number of bookmarks'},
+  },
+},
