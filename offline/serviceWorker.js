@@ -1,4 +1,4 @@
-const CACHE_NAME = 'c9f46d07aae6f2a1bf0cf81f1220f8dd';
+const CACHE_NAME = 'a85237c3cfcaf8241dbc02490e355cc8';
 const URLS_TO_CACHE = [
   '/',
   '/about',
@@ -17,7 +17,7 @@ const URLS_TO_CACHE = [
   '/_f/images/sidenavHeader.jpg',
   '/_f/scripts/materialize.min.js',
   '/_f/manifest.json',
-  '/_s/f538d3ad2e61beb6cb1d9474940817ca.min.css',
+  '/_s/c1a24c51e043eba4d57f13de3db780a6.min.css',
 ];
 // Call install event
 self.addEventListener('install', (e) => {

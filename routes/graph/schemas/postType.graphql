@@ -6,6 +6,6 @@ type Query {
 type Post {
   id: ID!
   title: String!,
-  body: String!,
+  content: String!,
   author: Author!,
 }

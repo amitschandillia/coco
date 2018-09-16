@@ -5,6 +5,7 @@ type Query {
 
 type Author {
   id: ID!,
-  name: String!,
+  first_name: String!,
+  last_name: String!,
   posts: [Post],
 }
