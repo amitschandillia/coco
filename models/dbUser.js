@@ -1,5 +1,20 @@
 const mongoose = require('mongoose');
 
+const userPost = mongoose.Schema({
+  id: {
+    type: String,
+    required: true,
+  },
+  title: {
+    type: String,
+    required: true,
+  },
+  content: {
+    type: String,
+    required: true,
+  },
+},{ _id : false });
+
 const userSchema = mongoose.Schema({
   _id: mongoose.Schema.Types.ObjectId,
   first_name: {
@@ -10,22 +25,7 @@ const userSchema = mongoose.Schema({
     type: String,
     required: true,
   },
-  posts: [
-    {
-      id: {
-        type: String,
-        required: true,
-      },
-      title: {
-        type: String,
-        required: true,
-      },
-      content: {
-        type: String,
-        required: true,
-      },
-    }
-  ],
+  posts: [userPost],
 });
 
 module.exports = mongoose.model('dbUser', userSchema);

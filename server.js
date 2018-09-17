@@ -36,6 +36,7 @@ app.prepare()
         useNewUrlParser: true,
       },
     );
+    mongoose.set('useFindAndModify', false);
 
     server.use(compression());
     server.use(favicon(path.join(__dirname, 'static', 'images', 'icons', 'favicon.ico')));

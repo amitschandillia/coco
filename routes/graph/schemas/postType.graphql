@@ -3,6 +3,10 @@ type Query {
   post(id: ID!): Post,
 }
 
+type Mutation {
+  addPost(title: String!, content: String!, author_id: String!, author_first_name: String!, author_last_name: String!): Post,
+}
+
 type Post {
   id: ID!
   title: String!,
