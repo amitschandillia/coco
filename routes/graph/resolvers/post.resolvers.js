@@ -18,15 +18,23 @@ module.exports = {
   // Mutations
   Mutation: {
     addPost: async (parent, args) => {
-      // Add new post to dbPosts
       const task = fawn.Task();
+      // Add new post to dbPosts
       task.save(
         dbPost,
         {
           _id: new mongoose.Types.ObjectId(),
           title: args.title,
           content: args.content,
-          created: new Date(),
+          slug: args.slug,
+          reading_time: args.reading_time,
+          published: args.published,
+          title_secondary: args.title_secondary,
+          meta_description: args.meta_description,
+          excerpt: args.excerpt,
+          events: {
+            created: new Date(),
+          },
           author: {
             id: args.author_id,
             first_name: args.author_first_name,
@@ -34,6 +42,7 @@ module.exports = {
           }
         }
       );
+      // Update author record in dbUsers
       task.update(
         dbUser,
         { _id: args.author_id },
@@ -57,5 +66,8 @@ module.exports = {
         return dbUser.findOne({'posts.id': parent.id});
       }
     },
+    events: (parent) => {
+      return parent.events;
+    }
   },
 };

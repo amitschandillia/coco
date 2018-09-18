@@ -1,8 +1,43 @@
 const mongoose = require('mongoose');
 
+const postTag = mongoose.Schema({
+  id: {
+    type: String,
+    required: true,
+  },
+  name: {
+    type: String,
+    required: true,
+  },
+},{ _id : false });
+
 const postSchema = mongoose.Schema({
   _id: mongoose.Schema.Types.ObjectId,
+  slug: {
+    type: String,
+    required: true,
+  },
+  reading_time: {
+    type: Number,
+    required: true,
+  },
+  published: {
+    // True if published, False if draft
+    type: Boolean,
+    required: true,
+  },
   title: {
+    type: String,
+    required: true,
+  },
+  title_secondary: {
+    type: String,
+  },
+  meta_description: {
+    // Use in meta and og description tags
+    type: String,
+  },
+  excerpt: {
     type: String,
     required: true,
   },
@@ -24,10 +59,30 @@ const postSchema = mongoose.Schema({
       required: true,
     },
   },
-  created: {
-    type: Date,
-    required: true,
-  }
+  events: {
+    created: { type: Date, required: true },
+    published: { type: Date },
+    last_modified: { type: Date },
+  },
+  tags: [postTag],
+  category: {
+    id: {
+      type: String,
+    },
+    name: {
+      type: String,
+    },
+  },
+  stats: {
+    likes: { type: Number },
+    comments: { type: Number },
+    views: { type: Number },
+    bookmarks: { type: Number },
+  },
+  featured_images: {
+    thumbnail: { type: String },
+    banner: { type: String },
+  },
 });
 
 module.exports = mongoose.model('dbPost', postSchema);
