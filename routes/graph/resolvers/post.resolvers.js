@@ -66,8 +66,5 @@ module.exports = {
         return dbUser.findOne({'posts.id': parent.id});
       }
     },
-    events: (parent) => {
-      return parent.events;
-    }
   },
 };
