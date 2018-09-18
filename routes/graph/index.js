@@ -3,7 +3,6 @@ const router = express.Router();
 const graphqlHTTP = require('express-graphql');
 const { makeExecutableSchema } = require('graphql-tools');
 
-require('./scalars/DateTime');
 const typeDefs = require('./schemas');
 const resolvers = require('./resolvers');
 

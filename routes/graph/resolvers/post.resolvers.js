@@ -49,8 +49,6 @@ module.exports = {
       return results[0];
     },
   },
-  // ...
-
   Post: {
     author: (parent) => {
       if(parent.author) {
