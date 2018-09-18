@@ -20,6 +20,17 @@ module.exports = {
     addPost: async (parent, args) => {
       const task = fawn.Task();
       // Add new post to dbPosts
+      if(args.published){
+        events = {
+          created_on: new Date(),
+          published_on: new Date(),
+        }
+      } else {
+        events = {
+          created_on: new Date(),
+        }
+      }
+      console.log(events);
       task.save(
         dbPost,
         {
@@ -32,9 +43,7 @@ module.exports = {
           title_secondary: args.title_secondary,
           meta_description: args.meta_description,
           excerpt: args.excerpt,
-          events: {
-            created_on: new Date(),
-          },
+          events: events,
           author: {
             id: args.author_id,
             first_name: args.author_first_name,
