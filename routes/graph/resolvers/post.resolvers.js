@@ -33,7 +33,7 @@ module.exports = {
           meta_description: args.meta_description,
           excerpt: args.excerpt,
           events: {
-            created: new Date(),
+            created_on: new Date(),
           },
           author: {
             id: args.author_id,

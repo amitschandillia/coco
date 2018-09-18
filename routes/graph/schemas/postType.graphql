@@ -22,9 +22,9 @@ type Mutation {
 }
 
 type Events {
-  created: DateTime,
-  published: DateTime,
-  last_modified: DateTime,
+  created_on: DateTime,
+  published_on: DateTime,
+  last_modified_on: DateTime,
 }
 
 type Post {
