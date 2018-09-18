@@ -24,6 +24,10 @@ const postSchema = mongoose.Schema({
       required: true,
     },
   },
+  created: {
+    type: Date,
+    required: true,
+  }
 });
 
 module.exports = mongoose.model('dbPost', postSchema);

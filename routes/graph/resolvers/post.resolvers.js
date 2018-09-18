@@ -26,6 +26,7 @@ module.exports = {
           _id: new mongoose.Types.ObjectId(),
           title: args.title,
           content: args.content,
+          created: new Date(),
           author: {
             id: args.author_id,
             first_name: args.author_first_name,
@@ -38,7 +39,7 @@ module.exports = {
         { _id: args.author_id },
         {$push: {posts:
           {
-            id: {$ojFuture: "0._id"},
+            id: {$ojFuture: '0._id'},
             title: args.title,
             content: args.content,
           }
