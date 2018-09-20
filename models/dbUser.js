@@ -9,10 +9,6 @@ const userPost = mongoose.Schema({
     type: String,
     required: true,
   },
-  content: {
-    type: String,
-    required: true,
-  },
 },{ _id : false });
 
 const userSchema = mongoose.Schema({
@@ -26,6 +22,7 @@ const userSchema = mongoose.Schema({
     required: true,
   },
   posts: [userPost],
+  drafts: [userPost],
 });
 
 module.exports = mongoose.model('dbUser', userSchema);

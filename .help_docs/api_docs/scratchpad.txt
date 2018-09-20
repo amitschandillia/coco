@@ -1,0 +1,25 @@
+ALL POSTS
+------------
+all post-specific items
+
+author.id
+author.firstname
+author.lastname
+author.thumbnail
+
+stats.all counts
+
+category.id
+category.name
+
+tags.all tags id
+tags.all tags name
+
+
+SINGLE POST
+---------------
+[ALL POSTS] +
+author.bio
+author.facebooklink
+author.twitterlink
+author.googlelink

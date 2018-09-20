@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const graphqlFields = require('graphql-fields');
 const fawn = require('fawn');
 const dbPost = require('../../../models/dbPost');
 const dbUser = require('../../../models/dbUser');
@@ -22,15 +23,28 @@ module.exports = {
       // Add new post to dbPosts
       if(args.published){
         events = {
-          created_on: new Date(),
-          published_on: new Date(),
-        }
+          created_at: new Date(),
+          last_modified_at: new Date(),
+          published_at: new Date(),
+        };
+        work = {posts:
+          {
+            id: {$ojFuture: '0._id'},
+            title: args.title,
+          }
+        };
       } else {
         events = {
-          created_on: new Date(),
-        }
+          created_at: new Date(),
+          last_modified_at: new Date(),
+        };
+        work = {drafts:
+          {
+            id: {$ojFuture: '0._id'},
+            title: args.title,
+          }
+        };
       }
-      console.log(events);
       task.save(
         dbPost,
         {
@@ -55,21 +69,26 @@ module.exports = {
       task.update(
         dbUser,
         { _id: args.author_id },
-        {$push: {posts:
-          {
-            id: {$ojFuture: '0._id'},
-            title: args.title,
-            content: args.content,
-          }
-        }}
+        {$push: work}
       );
       const results = await task.run({useMongoose: true});
       return results[0];
     },
   },
   Post: {
-    author: (parent) => {
-      if(parent.author) {
+    author: (parent, args, context, ast) => {
+      // Retrieve fields being queried
+      const queriedFields = Object.keys(graphqlFields(ast));
+      console.log('-------------------------------------------------------------');
+      console.log('from Post:author resolver');
+      console.log('queriedFields', queriedFields);
+      // Retrieve fields returned by parent, if any
+      const fieldsInParent = Object.keys(parent.author);
+      console.log('fieldsInParent', fieldsInParent);
+      // Check if queried fields already exist in parent
+      const available = queriedFields.every((field) => fieldsInParent.includes(field));
+      console.log('available', available);
+      if(parent.author && available) {
         return parent.author;
       } else {
         return dbUser.findOne({'posts.id': parent.id});

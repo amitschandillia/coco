@@ -60,9 +60,9 @@ const postSchema = mongoose.Schema({
     },
   },
   events: {
-    created_on: { type: Date, required: true },
-    published_on: { type: Date },
-    last_modified_on: { type: Date },
+    created_at: { type: Date, required: true },
+    published_at: { type: Date },
+    last_modified_at: { type: Date },
   },
   tags: [postTag],
   category: {

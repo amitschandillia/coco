@@ -8,4 +8,5 @@ type Author {
   first_name: String!,
   last_name: String!,
   posts: [Post],
+  drafts: [Post],
 }
