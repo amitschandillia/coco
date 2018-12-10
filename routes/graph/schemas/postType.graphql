@@ -1,7 +1,7 @@
 scalar DateTime
 
 type Query {
-  posts: [Post],
+  posts(isPublished: Boolean): [Post],
   post(id: ID!): Post,
 }
 
@@ -9,15 +9,15 @@ type Mutation {
   addPost(
     slug: String!,
     reading_time: Int!,
-    published: Boolean!,
+    isPublished: Boolean!,
     title: String!,
     title_secondary: String,
     meta_description: String,
     excerpt: String!,
     content: String!,
     author_id: String!,
-    author_first_name: String!
-    author_last_name: String!
+    author_first_name: String!,
+    author_last_name: String!,
   ): Post,
 }
 
@@ -31,7 +31,7 @@ type Post {
   id: ID!,
   slug: String!,
   reading_time: Int!,
-  published: Boolean!,
+  isPublished: Boolean!,
   title: String!,
   title_secondary: String,
   meta_description: String,

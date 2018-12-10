@@ -10,7 +10,8 @@ module.exports = {
   // Queries
   Query: {
     posts: (root, args, context) => {
-      return dbPost.find({});
+      const isPublished = (typeof args.isPublished == 'boolean' ? args.isPublished : true);
+      return dbPost.find({'isPublished': isPublished});
     },
     post: (root, args, context) => {
       return dbPost.findById(args.id);
@@ -21,30 +22,25 @@ module.exports = {
     addPost: async (parent, args) => {
       const task = fawn.Task();
       // Add new post to dbPosts
-      if(args.published){
+      if(args.isPublished){
         events = {
           created_at: new Date(),
           last_modified_at: new Date(),
           published_at: new Date(),
-        };
-        work = {posts:
-          {
-            id: {$ojFuture: '0._id'},
-            title: args.title,
-          }
         };
       } else {
         events = {
           created_at: new Date(),
           last_modified_at: new Date(),
         };
-        work = {drafts:
-          {
-            id: {$ojFuture: '0._id'},
-            title: args.title,
-          }
-        };
       }
+      work = {
+        posts: {
+          id: {$ojFuture: '0._id'},
+          title: args.title,
+          isPublished: args.isPublished,
+        }
+      };
       task.save(
         dbPost,
         {
@@ -53,7 +49,7 @@ module.exports = {
           content: args.content,
           slug: args.slug,
           reading_time: args.reading_time,
-          published: args.published,
+          isPublished: args.isPublished,
           title_secondary: args.title_secondary,
           meta_description: args.meta_description,
           excerpt: args.excerpt,
@@ -89,8 +85,10 @@ module.exports = {
       const available = queriedFields.every((field) => fieldsInParent.includes(field));
       console.log('available', available);
       if(parent.author && available) {
+        console.log('no query');
         return parent.author;
       } else {
+        console.log('query db');
         return dbUser.findOne({'posts.id': parent.id});
       }
     },

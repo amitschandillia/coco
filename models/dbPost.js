@@ -21,7 +21,7 @@ const postSchema = mongoose.Schema({
     type: Number,
     required: true,
   },
-  published: {
+  isPublished: {
     // True if published, False if draft
     type: Boolean,
     required: true,

@@ -29,27 +29,13 @@ module.exports = {
       // Check if queried fields already exist in parent
       const available = queriedFields.every((field) => fieldsInParent.includes(field));
       console.log('available', available);
+      const isPublished = (typeof args.isPublished == 'boolean' ? args.isPublished : true);
       if(parent.posts && available) {
         // If parent data is available and includes queried fields, no need to query db
-        return parent.posts;
+        return parent.posts.filter(elem => elem.isPublished == isPublished);
       } else {
         // Otherwise, query db and retrieve data
-        return dbPost.find({'author.id': parent.id, 'published': true});
-      }
-    },
-    drafts: (parent, args, context, ast) => {
-      // Retrieve fields being queried
-      const queriedFields = Object.keys(graphqlFields(ast));
-      // Retrieve fields returned by parent, if any
-      const fieldsInParent = Object.keys(parent.drafts[0]._doc);
-      // Check if queried fields already exist in parent
-      const available = queriedFields.every((field) => fieldsInParent.includes(field));
-      if(parent.drafts && available) {
-        // If parent data is available and includes queried fields, no need to query db
-        return parent.drafts;
-      } else {
-        // Otherwise, query db and retrieve data
-        return dbPost.find({'author.id': parent.id, 'published': false});
+        return dbPost.find({'author.id': parent.id, 'isPublished': isPublished});
       }
     },
   },
