@@ -19,6 +19,7 @@ module.exports = {
   },
   // Mutations
   Mutation: {
+    // Add a new post
     addPost: async (parent, args) => {
       const task = fawn.Task();
       // Add new post to dbPosts
@@ -70,6 +71,9 @@ module.exports = {
       const results = await task.run({useMongoose: true});
       return results[0];
     },
+
+    // Update an existing post
+    // updatePost: async (parent, args) => {},
   },
   Post: {
     author: (parent, args, context, ast) => {
